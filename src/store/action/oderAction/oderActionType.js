@@ -1,0 +1,10 @@
+export const getPreOder = "GET_PREODER";
+export const updatePreOder = "UPDATE_PREODER";
+export const addPreOder = "ADD_PREODER";
+export const removePreoder = "REMOVE_PREODER";
+export const deletePreoder = "DELETE_PREODER";
+export const oderGetAll = "GET_ALL_ODER";
+export const oderGetWaiting = "GET_WAITING_ODER";
+export const oderGetProcessing = "GET_PROCESSING_ODER";
+export const oderGetDeliver = "GET_DELIVER_ODER";
+export const oderGetReceive = "GET_RECEIVE_ODER";
