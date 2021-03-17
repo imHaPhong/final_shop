@@ -30,10 +30,10 @@ const config1 = {
 
 export const getUserInfo = () => async (dispatch) => {
   const request = await axiouInst.get("/user/profile", config);
-  localStorage.setItem("UserInfo", JSON.stringify(request.data));
-  dispatch(userInfo(request.data));
 
   if (request.data !== "Access dined") {
+    localStorage.setItem("UserInfo", JSON.stringify(request.data));
+    dispatch(userInfo(request.data));
     dispatch(isLogin());
   }
 };
@@ -93,7 +93,7 @@ export const getPosts = (data) => (dispatch) => {
 
 export const getAllRestaurant = (data) => async (dispatch) => {
   const resData = await axiouInst.get("/user/getAllRestaurant");
-  dispatch(getListRestaurantAction(resData.data.listRestaurant));
+  dispatch(getListRestaurantAction(resData.data.listRestaurant || []));
   return resData.data.listRestaurant;
 };
 
@@ -185,4 +185,32 @@ export const oderGetReceive = () => async (dispatch) => {
   dispatch(
     oderGetReceiveAction(resData.data.oders.filter((el) => el.status === 3))
   );
+};
+
+export const getHashTag = () => async (dispatch) => {
+  const hashTags = await axiouInst.get("/user/tags");
+  return hashTags.data.tags;
+};
+export const getPostByData = (data) => async (dispatch) => {
+  const hashTags = await axiouInst.get(`/user/filter/${data}`);
+  return hashTags.data.posts;
+};
+
+export const userUpdate = (data, callback) => async (dispatch) => {
+  const updateKey = Object.keys(data);
+  const updateValue = Object.values(data);
+  var bodyFormData = new FormData();
+
+  updateKey.map((el, index) => bodyFormData.append(el, updateValue[index]));
+  const res = await axiouInst.post("/user/profile", bodyFormData, config);
+  console.log(res);
+  await localStorage.setItem("UserInfo", JSON.stringify(res.data));
+  dispatch(userInfo(res.data));
+  callback();
+};
+
+export const userAddAddress = (data) => async (dispatch) => {
+  const res = await axiouInst.post("/user/addAddress", data);
+  localStorage.setItem("UserInfo", JSON.stringify(res.data));
+  dispatch(userInfo(res.data));
 };

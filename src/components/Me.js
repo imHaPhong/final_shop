@@ -23,9 +23,7 @@ const Me = ({ user }) => {
 
   return (
     <UserLayout>
-      {posts.map((el, index) => (
-        <Post data={el} index={index} />
-      ))}
+      {posts && posts.map((el, index) => <Post data={el} index={index} />)}
     </UserLayout>
   );
 };

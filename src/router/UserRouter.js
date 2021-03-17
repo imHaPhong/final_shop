@@ -9,26 +9,31 @@ import Order from "../pages/Order";
 import FoodDetail from "../components/FoodDetail";
 import CreateAccountForm from "../components/CreateAccountForm";
 import UserOder from "../components/UserOder";
+import UserHashTag from "../components/UserHashTag";
+import MSetting from "../components/MSetting";
 
 const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
   const [isShow, setIsShow] = useState(false);
   useEffect(() => {
-    getUserInfo();
-    const getUSerInfo = localStorage.getItem("UserInfo");
-    if (!getUSerInfo) {
-      return getUserInfo();
-    }
-    setUserInfo(JSON.parse(getUSerInfo));
+    const getData = async () => {
+      const getUSerInfox = await localStorage.getItem("UserInfo" || []);
+      if (!getUSerInfox) {
+        return getUserInfo();
+      }
+      await setUserInfo(JSON.parse(getUSerInfox));
+      if (!auth.auth) {
+        return <Redirect to="/login" />;
+      }
+    };
+    getData();
   }, []);
   useEffect(() => {
     if (auth.err) {
       setIsShow(true);
     }
   }, [auth.err]);
-  // if (!auth.auth) {
-  //   return <Redirect to="/login" />;
-  // }
 
+  useEffect(() => {}, []);
   return (
     <>
       {auth.err.error && isShow && (
@@ -48,14 +53,17 @@ const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
         <Route path="/user/listRestaurant" exact>
           <Order />
         </Route>
-        <Route path="/user/register" exact>
-          <CreateAccountForm />
-        </Route>
         <Route path="/user/oder" exact>
           <UserOder />
         </Route>
+        <Route path="/user/tag/:rName" exact>
+          <UserHashTag />
+        </Route>
         <Route path="/user" exact>
           <Home />
+        </Route>
+        <Route path="/user/setting" exact>
+          <MSetting />
         </Route>
         <Route path="/user/mypost">
           <Me />

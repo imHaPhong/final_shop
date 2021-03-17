@@ -20,6 +20,9 @@ const Routers = () => {
       <Route path="/restaurant">
         <RestaurantRouter />
       </Route>
+      <Route path="/register" exact>
+        <CreateAccountForm />
+      </Route>
     </Switch>
   );
 };

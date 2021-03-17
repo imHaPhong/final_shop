@@ -77,7 +77,8 @@ const UserOder = ({
         </div>
 
         <div className="u-oderContainer">
-          {fetchData.length > 0 &&
+          {fetchData &&
+            fetchData.length > 0 &&
             fetchData.map((el, index) => (
               <UserOderItem key={index} oderData={el} />
             ))}

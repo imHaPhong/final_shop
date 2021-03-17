@@ -9,6 +9,7 @@ import Posts from "../components/Posts";
 import { UserLayout } from "../layout/UserLayout/UserLayout";
 import { getNewPost } from "../middlerware/userMiddlerware";
 import { socket } from "../config/socket";
+import BodyLeft from "../layout/UserLayout/partials/bodyleft/index";
 
 const Home = ({ getNewPost, auth }) => {
   const [newPost, setNewPost] = useState(null);
@@ -31,7 +32,6 @@ const Home = ({ getNewPost, auth }) => {
             page: Number(pages.page) + 1,
           });
           if (hasMore) {
-            console.log("hasmore");
             let post = await getNewPost(pages);
             if (post.length === 0) return setHasMore(false);
             setNewPost(newPost.concat(post));
@@ -74,7 +74,7 @@ const Home = ({ getNewPost, auth }) => {
     <div>
       <UserLayout>
         {auth.auth && <CreatePost />}
-        {!auth.auth && <div>User must login to see post</div>}
+        {!auth.auth && <BodyLeft />}
         {!newPost && auth.auth && (
           <div style={{ position: "relative", height: "50vh" }}>
             <Loader size="lg" center content="loading" />

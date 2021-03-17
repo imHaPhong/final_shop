@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const axiouInst = axios.create({
-  baseURL: "https://tuanna-final.herokuapp.com/",
+  // baseURL: "https://tuanna-final.herokuapp.com/",
+  baseURL: "http://localhost:8080",
 });
 
 axiouInst.interceptors.request.use(function (config) {
@@ -26,5 +27,6 @@ axiouInst.interceptors.response.use(
 );
 
 export const axiosInstanceAuth = axios.create({
-  baseURL: "https://tuanna-final.herokuapp.com/",
+  // baseURL: "https://tuanna-final.herokuapp.com/",
+  baseURL: "http://localhost:8080",
 });

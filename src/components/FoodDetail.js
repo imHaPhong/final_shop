@@ -8,6 +8,7 @@ import {
   Grid,
   Icon,
   Input,
+  InputGroup,
   Modal,
   Radio,
   RadioGroup,
@@ -23,6 +24,8 @@ import {
   deletePreOder,
 } from "../middlerware/userMiddlerware";
 import MyApp from "./Payal";
+import { useMediaQuery } from "../utilities/custom-hooks/useMediaQuery";
+import MDishItem from "./MDishItem";
 
 const FoodDetail = ({
   deletePreOder,
@@ -44,12 +47,21 @@ const FoodDetail = ({
 
   const [paymentType, setPaymentType] = useState("");
 
+  const [address, setAddress] = useState([]);
+  const listAddress = [
+    ...user.userAddress.map((el) => {
+      return { title: el, isSelect: false };
+    }),
+  ];
+  useEffect(() => {
+    setAddress(listAddress);
+  }, [user]);
+
   const onError = () => {};
 
   const onCancel = () => {};
 
   const onSuccess = () => {
-    console.log("vao day");
     setOpen(false);
     deletePreOder();
     createrOder({ rId: id, dish: preOder, total });
@@ -72,7 +84,17 @@ const FoodDetail = ({
     }
     deletePreOder();
     setOpen(false);
-    createrOder({ rId: id, dish: preOder, total });
+
+    const deliveryAddress = address.filter((el) => el.isSelect === true);
+    if (!deliveryAddress) {
+      return Alert.error("User must choose address", 3000);
+    }
+    createrOder({
+      rId: id,
+      dish: preOder,
+      total,
+      deliveryAddress: deliveryAddress[0].title,
+    });
     Alert.success("Oder success", 3000);
   };
 
@@ -97,6 +119,35 @@ const FoodDetail = ({
     setOpen(false);
   };
 
+  const isMoblie = useMediaQuery("(max-width: 992px)");
+
+  const [menuSetting, setMenuSetting] = useState({
+    isImgView: false,
+    search: false,
+  });
+  const [rawData, setRawData] = useState(restaurantData);
+
+  useEffect(() => {
+    setRawData(restaurantData);
+  }, [restaurantData]);
+  const userSearchDish = (e) => {
+    if (e === "") {
+      return setRawData(restaurantData);
+    } else {
+      let subMenuList = [...rawData.menu];
+
+      let result = subMenuList.map((el) => {
+        var d = el.items.filter((i) => i.name.includes(e));
+        var dat = { _id: el._id, menuTitle: el.menuTitle, items: d };
+        return dat;
+      });
+      setRawData((p) => ({
+        ...p,
+        menu: result,
+      }));
+    }
+  };
+
   return (
     <>
       <div className="modal-center">
@@ -112,17 +163,20 @@ const FoodDetail = ({
             <div>
               <span className="co-title">nhap dia chi giao hang</span>
               <div className="userAddress-list">
-                {user.userAddress.map((el) => (
-                  <span className="userAddress-item itemActive">
-                    <Icon icon="check" />
-                    {el}
+                {address.map((el, index) => (
+                  <span
+                    key={index}
+                    className="userAddress-item itemActive"
+                    onClick={() => {
+                      var a = listAddress;
+                      a[index].isSelect = true;
+                      setAddress(a);
+                    }}
+                  >
+                    {el.isSelect && <Icon icon="check" />}
+                    {el.title}
                   </span>
                 ))}
-
-                {/* <span className="">
-                  <Input />
-                  <Icon icon="check" />
-                </span> */}
               </div>
             </div>
             <div className="mt-2">
@@ -202,74 +256,143 @@ const FoodDetail = ({
           </div>
         </div>
       </div>
-      <div className="fd-m-container">
-        <div className="fd-menu">
-          <div className="fd-menu-title">Menu</div>
-          <div className="fd-menu-content">
-            <Row gutter={16}>
-              <Col md={5} className="b">
-                <div className="fd-menu-left">
-                  <ul>
-                    {restaurantData &&
-                      restaurantData.menu.map((el) => <li>{el.menuTitle}</li>)}
-                  </ul>
-                </div>
-              </Col>
-              <Col md={14} className="b">
-                <div className="db-menu-center">
-                  <div className="input-container">
-                    <Icon icon="search" />
-                    <input type="text" placeholder="Search dish in menu" />
+      {!isMoblie && (
+        <div className="fd-m-container">
+          <div className="fd-menu">
+            <div className="fd-menu-title">Menu</div>
+            <div className="fd-menu-content">
+              <Row gutter={16}>
+                <Col md={5} className="b">
+                  <div className="fd-menu-left">
+                    <ul>
+                      {restaurantData &&
+                        restaurantData.menu.map((el, index) => (
+                          <li key={index}>{el.menuTitle}</li>
+                        ))}
+                    </ul>
                   </div>
-                  <div className="list-dish">
-                    {restaurantData &&
-                      restaurantData.menu.map((el) => {
-                        return (
-                          <>
-                            <span className="list-dish-title">
-                              {el.menuTitle}
-                            </span>
-                            {el.items.map((item) => {
-                              return <DishItem data={item} />;
-                            })}
-                          </>
-                        );
-                      })}
-                  </div>
-                </div>
-              </Col>
-              <Col md={5} className="b">
-                <div className="fd-menu-right">
-                  <div className="fd-right-header ">
-                    <div className="fd-right-user">
-                      <img src={user.uAvatar} alt="" />
-                      <span>{user.username}</span>
+                </Col>
+                <Col md={14} className="b">
+                  <div className="db-menu-center">
+                    <div className="input-container">
+                      <Icon icon="search" />
+                      <input
+                        type="text"
+                        placeholder="Search dish in menu"
+                        onChange={(e) => userSearchDish(e.target.value)}
+                      />
                     </div>
-                    <span>{preOder.length} mon</span>
+                    <div className="list-dish">
+                      {rawData &&
+                        rawData.menu.map((el, index) => {
+                          return (
+                            <>
+                              <span className="list-dish-title" key={index}>
+                                {el.menuTitle}
+                              </span>
+                              {el.items.map((item, indexz) => {
+                                return <DishItem key={indexz} data={item} />;
+                              })}
+                            </>
+                          );
+                        })}
+                    </div>
                   </div>
-                  <div>
-                    {preOder.map((el, index) => (
-                      <OrderItem key={index} value={el} />
-                    ))}
+                </Col>
+                <Col md={5} className="b">
+                  <div className="fd-menu-right">
+                    <div className="fd-right-header ">
+                      <div className="fd-right-user">
+                        <img src={user.uAvatar} alt="" />
+                        <span>{user.username}</span>
+                      </div>
+                      <span>{preOder.length} mon</span>
+                    </div>
+                    <div>
+                      {preOder.map((el, index) => (
+                        <OrderItem key={index} value={el} />
+                      ))}
+                    </div>
+                    <div className="fd-total">
+                      <div>Total</div>
+                      <span>{total}</span>
+                    </div>
+                    <div
+                      className={`fd-order-now ${
+                        preOder.length === 0 ? "btn-disable" : ""
+                      }`}
+                      onClick={onUserOder}
+                    >
+                      <Icon icon="check-circle" /> Oder Now
+                    </div>
                   </div>
-                  <div className="fd-total">
-                    <div>Total</div>
-                    <span>{total}</span>
-                  </div>
-                  <div
-                    className={`fd-order-now ${
-                      preOder.length === 0 ? "btn-disable" : ""
-                    }`}
-                    onClick={onUserOder}
-                  >
-                    <Icon icon="check-circle" /> Oder Now
-                  </div>
-                </div>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {isMoblie && (
+        <div className="m-fd-container">
+          <div className="settingMenu">
+            <span className="settingMenu-left">All</span>
+            <span className="settingMenu-right">
+              <Icon
+                icon="squares"
+                className={`${!menuSetting.isImgView ? `active` : ``}`}
+                onClick={() =>
+                  setMenuSetting((p) => ({
+                    ...p,
+                    isImgView: false,
+                  }))
+                }
+              />
+              <Icon
+                icon="th-large"
+                className={`${menuSetting.isImgView ? `active` : ``}`}
+                onClick={() =>
+                  setMenuSetting((p) => ({
+                    ...p,
+                    isImgView: true,
+                  }))
+                }
+              />
+              <Icon
+                icon="search"
+                onClick={() =>
+                  setMenuSetting((p) => ({
+                    ...p,
+                    search: !p.search,
+                  }))
+                }
+              />
+            </span>
+          </div>
+          {menuSetting.search && (
+            <InputGroup>
+              <Input placeholder="Search dish" onChange={userSearchDish} />
+              <InputGroup.Addon>
+                <Icon icon="search" />
+              </InputGroup.Addon>
+            </InputGroup>
+          )}
+          <div>
+            {rawData &&
+              rawData.menu.map((el, index) => {
+                if (el.items.length > 0) {
+                  return (
+                    <MDishItem
+                      title={el.menuTitle}
+                      isList={menuSetting.isImgView}
+                      data={el}
+                      menuQtn={el.items.length}
+                    />
+                  );
+                }
+              })}
+          </div>
+        </div>
+      )}
     </>
   );
 };

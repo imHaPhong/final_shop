@@ -86,7 +86,7 @@ const Header = ({
                   <Link to="/user/oder">Oder now</Link>{" "}
                 </li>
                 <li>
-                  <Link to="/user/mypost">my post</Link>{" "}
+                  <Link to="/user/setting">my post</Link>{" "}
                 </li>
               </ul>
             </div>
@@ -135,6 +135,7 @@ const Header = ({
                       <li
                         onClick={() => {
                           localStorage.removeItem("auth_token");
+                          localStorage.removeItem("UserInfo");
                           userLogout();
 
                           window.location.href = "/user";
@@ -166,7 +167,7 @@ const Header = ({
             <span className="m-logo">Logo</span>
             <span>
               <Icon icon="search" />
-              <img src={user.uAvatar} alt="" />
+              {auth.auth && <img src={user.uAvatar} alt="" />}
             </span>
           </div>
           <div className="m-nav-header-bottom">
@@ -190,7 +191,7 @@ const Header = ({
             </div>
             <div>
               {" "}
-              <Link to="/user">
+              <Link to="/user/setting">
                 <Icon icon="bars" />{" "}
               </Link>{" "}
             </div>

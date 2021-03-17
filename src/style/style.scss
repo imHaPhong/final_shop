@@ -250,6 +250,11 @@ body {
   margin-right: 10px;
   margin-bottom: 10px;
   &:hover {
+    a {
+      color: white;
+      text-decoration: none;
+    }
+    cursor: pointer;
     background: #2186c4;
     color: white;
   }
@@ -1425,6 +1430,7 @@ body {
 .u-oderHeader {
   width: 100%;
   background: white;
+  cursor: pointer;
   ul {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -1437,7 +1443,7 @@ body {
       justify-content: center;
       &.active {
         color: black;
-        border-bottom: 0.5rem solid red;
+        border-bottom: 0.2rem solid #2c3136;
         font-weight: bold;
         font-size: 1.6rem;
       }
@@ -1544,6 +1550,122 @@ body {
   }
 }
 
+.settingMenu {
+  display: flex;
+  padding: 1rem 1rem;
+  align-items: center;
+  i {
+    padding: 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 200;
+    &.active {
+      background-color: red;
+      color: #363c42;
+    }
+  }
+  .settingMenu-left {
+    flex: 1;
+  }
+  .settingMenu-right {
+    min-width: 30%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.m-fd-grid {
+  background: transparent;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 180px));
+  column-gap: 1rem;
+  row-gap: 1rem;
+  padding: 1rem 2rem;
+  &.m-fd-flex {
+    padding: 0;
+  }
+  &.m-fd-flex {
+    row-gap: 0rem;
+  }
+}
+
+.m-fd-dishContainer {
+  background: white;
+  border-radius: 5px;
+}
+
+.rs-panel-body {
+  padding: 0 !important;
+}
+.m-fd-dishContainer {
+  display: flex;
+  flex-direction: column;
+
+  .m-fd-dishTitle {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: black;
+  }
+  .m-fd-dishOderQtn {
+    i {
+      font-size: 1.4rem;
+      margin-right: 1rem;
+    }
+  }
+  .m-fd-dishfooter {
+    display: flex;
+    justify-content: space-between;
+  }
+  .m-fd-qtn {
+    align-items: center;
+    min-width: 40%;
+    display: flex;
+    justify-content: space-between;
+    i {
+      font-size: 1.8rem;
+      color: #187caa;
+    }
+  }
+  img {
+    width: 150px;
+  }
+}
+
+.m-fd-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-fd-disContainer-list {
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 0.1rem solid #2c3136;
+  border-radius: 0;
+  img {
+    width: 60px;
+  }
+  .m-fd-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 40%;
+    padding-left: 1rem;
+    .m-fd-dishTitle {
+      width: 90%;
+      display: block;
+    }
+  }
+  .m-fd-dishfooter {
+    flex: 1;
+    .m-fd-qtn {
+      width: 100%;
+      i {
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 992px) {
   html {
     overflow-x: hidden;
@@ -1556,6 +1678,9 @@ body {
   }
   .body {
     overflow-x: hidden;
+  }
+  .fd-menu {
+    width: 100%;
   }
   .container {
     margin-top: 92px;
@@ -1572,5 +1697,86 @@ body {
     max-width: 100%;
     padding: 0;
     margin: 0;
+  }
+  .u-oderContainer {
+    padding: 0;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .u-oder-container {
+    width: 100%;
+  }
+}
+
+.m-setting {
+  background: white;
+  padding: 0 1rem;
+}
+
+.m-setting-tittle {
+  display: block;
+  color: black;
+  font-weight: bold;
+  font-size: 2rem;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.rs-panel-bordered {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #6e7275;
+  font-size: 1.4rem;
+}
+.rs-panel-body {
+  color: black;
+}
+
+.m-user-info {
+  display: flex;
+  color: black;
+  font-weight: 600;
+  align-items: center;
+  font-size: 1.6rem;
+  i {
+    font-size: 1.8rem;
+  }
+  .m-usernameDisplay,
+  input {
+    width: 60%;
+    margin-right: 5rem;
+  }
+  img {
+    min-width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 2rem;
+  }
+}
+
+.loader {
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #272829b9;
+}
+
+.rs-loader-content {
+  color: white;
+  font-size: 2rem;
+}
+
+.m-setting-addrss {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  input {
+    flex: 1;
+    margin-right: 3rem;
+  }
+  i {
+    font-size: 3rem;
   }
 }

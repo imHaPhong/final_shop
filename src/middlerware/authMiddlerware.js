@@ -1,6 +1,7 @@
 import { axiouInst } from "../config/axiosInstance";
 import { loginFail, loginSucess } from "../store/action/authAction/authAction";
 import { LoginProcess } from "../store/action/authAction/authActionTypes";
+import { userInfo } from "../store/action/userAction/userAction";
 const config = {
   headers: {
     "Content-Type": "application/json",
@@ -18,7 +19,8 @@ export const Login = (data) => async (dispatch) => {
     const token = request.data.token;
     localStorage.setItem("auth_token", token);
     dispatch(loginSucess(token));
-    window.location.href = "/user";
+    dispatch(userInfo(request.data.user));
+    // window.location.href = "/user";
   } catch (error) {
     dispatch(loginFail(error));
   }

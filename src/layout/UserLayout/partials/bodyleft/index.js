@@ -77,7 +77,7 @@ const BodyLeft = ({ user, Login, auth }) => {
                   Login
                 </span>
                 <div>
-                  <Link to="/user/register">Register</Link>
+                  <Link to="/register">Register</Link>
                   <Link to="/passwordRecovory">Forgot password</Link>
                 </div>
               </div>
