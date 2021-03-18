@@ -16,7 +16,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         uId: payload._id,
         uAvatar: payload.avatar,
         username: payload.userName,
-        userAddress: [...INITIAL_STATE.userAddress, ...payload.address],
+        userAddress: [...INITIAL_STATE.userAddress, ...(payload.address || [])],
       };
     case UserLogout:
       return {

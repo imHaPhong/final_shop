@@ -211,7 +211,10 @@ export const userUpdate = (data, callback) => async (dispatch) => {
 };
 
 export const userAddAddress = (data) => async (dispatch) => {
+  console.log(data);
   const res = await axiouInst.post("/user/addAddress", data);
+  console.log(res.data);
+
   localStorage.setItem("UserInfo", JSON.stringify(res.data));
   dispatch(userInfo(res.data));
 };
