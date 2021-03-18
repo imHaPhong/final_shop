@@ -157,6 +157,7 @@ export const getAllOder = () => async (dispatch) => {
   const resData = await axiouInst.get("/user/oders");
 
   dispatch(getAllOderAction(resData.data.oders));
+  return resData.data.oders;
 };
 export const oderGetWaiting = () => async (dispatch) => {
   const resData = await axiouInst.get("/user/oders");
@@ -213,4 +214,10 @@ export const userAddAddress = (data) => async (dispatch) => {
   const res = await axiouInst.post("/user/addAddress", data);
   localStorage.setItem("UserInfo", JSON.stringify(res.data));
   dispatch(userInfo(res.data));
+};
+
+export const userGetOderInfo = (id) => async () => {
+  const res = await axiouInst.get(`/user/oderInfo/${id}`);
+  console.log(res);
+  return res.data.oderInfo;
 };

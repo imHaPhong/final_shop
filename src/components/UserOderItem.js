@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import OderSubItem from "./Restaurant/OderSubItem";
 
 const UserOderItem = ({ oderData }) => {
@@ -28,8 +29,9 @@ const UserOderItem = ({ oderData }) => {
           Total: <span className="ul-total-price">$ {oderData.total}</span>
         </span>
         <span>
-          {/* <span className="btn-listOder">Mua lai</span> */}
-          <span className="btn-listOder">Oder info</span>
+          <Link to={`/user/checking/${oderData._id}`}>
+            <span className="btn-listOder">Oder info</span>
+          </Link>
         </span>
       </div>
     </div>

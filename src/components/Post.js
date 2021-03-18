@@ -4,6 +4,7 @@ import { Icon } from "rsuite";
 import { userVote } from "../middlerware/userMiddlerware";
 import { io } from "socket.io-client";
 import { Link } from "react-router-dom";
+import { socket } from "../config/socket";
 
 const Post = ({ data, user, userVote }) => {
   const { _id, date, title, body, image = [], vote, tag, rId } = data;
@@ -15,9 +16,9 @@ const Post = ({ data, user, userVote }) => {
   }, []);
 
   useEffect(() => {
-    const socket = io("https://tuanna-final.herokuapp.com/", {
-      transports: ["websocket", "polling", "flashsocket"],
-    });
+    // const socket = io("https://tuanna-final.herokuapp.com/", {
+    //   transports: ["websocket", "polling", "flashsocket"],
+    // });
     socket.on("voted", (data) => {
       if (data.action === "vote") {
         if (data._id === _id) {

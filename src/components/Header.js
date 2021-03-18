@@ -86,7 +86,7 @@ const Header = ({
                   <Link to="/user/oder">Oder now</Link>{" "}
                 </li>
                 <li>
-                  <Link to="/user/setting">my post</Link>{" "}
+                  <Link to="/user/checking">Checking</Link>{" "}
                 </li>
               </ul>
             </div>

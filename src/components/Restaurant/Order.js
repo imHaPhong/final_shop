@@ -4,6 +4,7 @@ import { Table } from "rsuite";
 import { getOder } from "../../middlerware/restaurantMiddleware";
 import OderItem from "./OderItem";
 import { io } from "socket.io-client";
+import { socket } from "../../config/socket";
 
 const Order = ({ getOder, tabTitle, renderList }) => {
   const { Column, HeaderCell, Cell, Pagination } = Table;
@@ -17,9 +18,10 @@ const Order = ({ getOder, tabTitle, renderList }) => {
     data();
   }, []);
   useEffect(() => {
-    const socket = io("https://tuanna-final.herokuapp.com/", {
-      transports: ["websocket", "polling", "flashsocket"],
-    });
+    // const socket = io("https://tuanna-final.herokuapp.com/", {
+    //   transports: ["websocket", "polling", "flashsocket"],
+    // });
+
     socket.on("UpdateOder", (oderData) => {
       setData(dataOder.concat(oderData.oder));
     });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router";
+import { Redirect, useParams } from "react-router";
 import {
   Alert,
   Col,
@@ -26,6 +26,7 @@ import {
 import MyApp from "./Payal";
 import { useMediaQuery } from "../utilities/custom-hooks/useMediaQuery";
 import MDishItem from "./MDishItem";
+import { Link } from "react-router-dom";
 
 const FoodDetail = ({
   deletePreOder,
@@ -36,7 +37,6 @@ const FoodDetail = ({
   createrOder,
 }) => {
   var total = 0;
-
   let { id } = useParams();
 
   const [restaurantData, setRestaurantData] = useState({
@@ -155,7 +155,10 @@ const FoodDetail = ({
           <Modal.Title>Create oder</Modal.Title>
           <Modal.Body>
             <div>
-              <span className="co-title">List dish</span>
+              <span className="modal-header">
+                <span className="co-title">List dish</span>
+                {isMoblie && <Icon icon="close" onClick={setIsClose} />}
+              </span>
               {preOder.map((el, index) => (
                 <OrderItem key={index} value={el} isEdit={false} />
               ))}
@@ -219,8 +222,8 @@ const FoodDetail = ({
         </Modal>
       </div>
       <Header />
-      <div className="fd-container">
-        <div className="fd-hero">
+      <div className="fd-container ">
+        {/* <div className="fd-hero">
           <div className="fd-hero-img">
             <img
               src="https://images.foody.vn/res/g76/758862/prof/s640x400/foody-upload-api-foody-mobile-thuy-beo-jpg-180713113040.jpg"
@@ -253,6 +256,29 @@ const FoodDetail = ({
               <span className="fd-detail_title">Prepare</span>
               <span>12 Min</span>
             </div>
+          </div>
+        </div> */}
+
+        <div className="m-fd-hero">
+          <img
+            src="https://images.foody.vn/res/g76/758862/prof/s640x400/foody-upload-api-foody-mobile-thuy-beo-jpg-180713113040.jpg"
+            alt=""
+          />
+          <div className="m-fd-detail">
+            <Link to="/user/listRestaurant">
+              <Icon icon="angle-left" />
+            </Link>
+            <span>
+              <span className="m-fd-name">{restaurantData.restaurantName}</span>
+              <span className="m-fd-addressContainer">
+                <span className="m-fd-address">{restaurantData.address}</span>
+
+                <span className="isOpen">
+                  <Icon icon="circle" />
+                  Open
+                </span>
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -391,6 +417,41 @@ const FoodDetail = ({
                 }
               })}
           </div>
+          {/* <div className="m-preOderCotainer">
+            <div className="m-preOderTable">
+              <div className="m-preOderHeader">
+                <Icon icon="close" />
+                Thuy Beo
+                <span>xoa</span>
+              </div>
+              <div className="m-preOderInfo">
+                <span>
+                  <img src="" alt="" />
+                  <span>Anh Tuan</span>
+                </span>
+                <span>
+                  <span>1 phan</span> - 80000d
+                </span>
+              </div>
+            </div>
+          </div> */}
+          <div style={{ width: "100%", height: "5vh" }}></div>
+          {preOder.length > 0 && (
+            <div className="m-preOderList">
+              <span className="m-preOderList-right">
+                <span className="m-preOderList-detail">
+                  <Icon icon="inbox" />
+                  <span className="qtn-preOder">{preOder.length}</span>
+                </span>
+                <span style={{ fontWeight: "600", fontSize: "1.5rem" }}>
+                  {total}
+                </span>
+              </span>
+              <span className="m-preOderList-left" onClick={onUserOder}>
+                Giao Hang <Icon icon="angle-right" />{" "}
+              </span>
+            </div>
+          )}
         </div>
       )}
     </>

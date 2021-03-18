@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import Header from "./Header";
 import UserOderItem from "./UserOderItem";
@@ -10,7 +10,8 @@ import {
   oderGetWaiting,
   getAllOder,
 } from "../middlerware/userMiddlerware";
-import { io } from "socket.io-client";
+import { socket } from "../config/socket";
+
 const UserOder = ({
   getListOder,
   oderGetReceive,
@@ -22,20 +23,24 @@ const UserOder = ({
   fetchData,
 }) => {
   const [listData, setListData] = useState([]);
+  const [oderList, setOderList] = useState();
 
   useEffect(() => {
     const getData = async () => {
-      const resData = await getListOder();
-      setListData(resData);
+      const getData = async () => {
+        const resData = await getListOder();
+        setListData(resData);
+      };
+      const data = await getAllOder();
+      setOderList(data);
+      getData();
+      socket.on("change2Processing", async (data) => {
+        oderGetWaiting();
+        const datax = await getAllOder();
+        setOderList(datax);
+      });
     };
-    getAllOder();
     getData();
-    const socket = io("https://tuanna-final.herokuapp.com/", {
-      transports: ["websocket", "polling", "flashsocket"],
-    });
-    socket.on("change2Processing", (data) => {
-      oderGetWaiting();
-    });
   }, []);
 
   const userSelect = (index) => {
@@ -56,20 +61,69 @@ const UserOder = ({
     }
   };
 
+  // const headerRef = useRef();
+
+  // const [scrollOut, setIsScrollOut] = useState(false);
+
+  // const listenToScroll = () => {
+  //   if (headerRef.current) {
+  //     if (document.documentElement.scrollTop > headerRef.current.offsetWidth) {
+  //       setIsScrollOut(true);
+  //     } else {
+  //       setIsScrollOut(false);
+  //     }
+  //   }
+  // };
+
+  // window.addEventListener("scroll", listenToScroll);
+
+  const changeText2State = (text) => {
+    switch (text) {
+      case "Wating":
+        return 0;
+      case "Processing":
+        return 1;
+      case "Delivery":
+        return 2;
+      case "Receive":
+        return 3;
+      default:
+        return 4;
+    }
+  };
+
+  const getQtn = (id, list) => {
+    console.log(id, list);
+    const qtn = list.filter((el) => el.status === id);
+    return qtn.length;
+  };
+
   return (
     <div>
       <Header />
       <div className="user-oder">
-        <div className="u-oderHeader">
+        <div
+          className="u-oderHeader"
+          // ref={headerRef}
+          // style={{ position: "fixed", top: "97px", zIndex: 1000 }}
+        >
           <ul>
             {select.map((el, index) => {
               return (
                 <li
+                  style={{ position: "relative" }}
                   key={index}
                   onClick={() => userSelect(index)}
                   className={`${el.active ? `active` : ``}`}
                 >
                   {el.content}
+                  {el.content !== "All" &&
+                    listData.length > 0 &&
+                    getQtn(changeText2State(el.content), oderList) > 0 && (
+                      <span className="oderInfo-qtn">
+                        {getQtn(changeText2State(el.content), oderList)}
+                      </span>
+                    )}
                 </li>
               );
             })}

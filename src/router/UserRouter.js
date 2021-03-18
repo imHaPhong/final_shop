@@ -11,6 +11,7 @@ import CreateAccountForm from "../components/CreateAccountForm";
 import UserOder from "../components/UserOder";
 import UserHashTag from "../components/UserHashTag";
 import MSetting from "../components/MSetting";
+import Checking from "../components/Checking";
 
 const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
   const [isShow, setIsShow] = useState(false);
@@ -65,8 +66,8 @@ const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
         <Route path="/user/setting" exact>
           <MSetting />
         </Route>
-        <Route path="/user/mypost">
-          <Me />
+        <Route path="/user/checking/:id">
+          <Checking />
         </Route>
       </Switch>
     </>
