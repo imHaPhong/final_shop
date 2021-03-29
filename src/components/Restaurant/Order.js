@@ -18,10 +18,6 @@ const Order = ({ getOder, tabTitle, renderList }) => {
     data();
   }, []);
   useEffect(() => {
-    // const socket = io("https://tuanna-final.herokuapp.com/", {
-    //   transports: ["websocket", "polling", "flashsocket"],
-    // });
-
     socket.on("UpdateOder", (oderData) => {
       setData(dataOder.concat(oderData.oder));
     });

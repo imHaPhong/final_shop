@@ -88,3 +88,22 @@ export const change2Processing = (data) => async () => {
   const resData = await axiouInst.post("/restaurant/oderProcess", data);
   console.log(resData);
 };
+
+export const restaurantGetInfo = () => async () => {
+  const resData = await axiouInst.get("/restaurant/info");
+  return resData.data.restaurantInfo;
+};
+
+export const restaurantUpdateInfo = (data) => async () => {
+  console.log(data);
+  var bodyFormData = new FormData();
+  bodyFormData.append("avatar", data.avatar);
+  bodyFormData.append("restaurantName", data.restaurantName);
+  bodyFormData.append("address", data.address);
+  bodyFormData.append("timeAcitve", data.timeAcitve);
+  const resData = await axiouInst.post(
+    "/restaurant/info",
+    bodyFormData,
+    config
+  );
+};

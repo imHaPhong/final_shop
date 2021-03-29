@@ -75,7 +75,7 @@ const Header = ({
               <span>Logo</span>
               <ul>
                 <li>
-                  <Link to="/user">my post</Link>{" "}
+                  <Link to="/user">Home</Link>{" "}
                 </li>
                 <li>
                   {" "}
@@ -83,10 +83,14 @@ const Header = ({
                 </li>
                 <li>
                   {" "}
-                  <Link to="/user/oder">Oder now</Link>{" "}
+                  <Link to="/user/oder">Oders</Link>{" "}
                 </li>
                 <li>
-                  <Link to="/user/checking">Checking</Link>{" "}
+                  {" "}
+                  <Link to="/user/page">Voucher</Link>{" "}
+                </li>
+                <li>
+                  <Link to="/user/checking">My Posts</Link>{" "}
                 </li>
               </ul>
             </div>
@@ -132,6 +136,9 @@ const Header = ({
                     ref={ref}
                   >
                     <ul>
+                      <li>
+                        <Link to="/user/setting">Setting</Link>
+                      </li>
                       <li
                         onClick={() => {
                           localStorage.removeItem("auth_token");
@@ -143,6 +150,15 @@ const Header = ({
                       >
                         Log out
                       </li>
+                      <li
+                        onClick={() => {
+                          localStorage.removeItem("auth_token");
+                          localStorage.removeItem("UserInfo");
+                          userLogout();
+
+                          window.location.href = "/user";
+                        }}
+                      ></li>
                     </ul>
                   </span>
                 </div>

@@ -20,7 +20,6 @@ body {
 
 ul {
   list-style: none;
-  display: flex;
 }
 
 .mr-1 {
@@ -49,6 +48,9 @@ nav {
   font-size: 1.6rem;
 }
 .nav-container {
+  ul {
+    display: flex;
+  }
   width: 90%;
   min-height: 86px;
   display: flex;
@@ -461,6 +463,11 @@ body {
   font-weight: 700;
   color: #2186c4;
   padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+}
+.dish-item-img {
+  margin-right: 2rem;
 }
 .post-detail {
   font-size: 1.2rem;
@@ -486,9 +493,14 @@ body {
   width: 100%;
   display: none;
   position: absolute;
-  background: rebeccapurple;
+  background: #363c42;
+  cursor: pointer;
   bottom: -100%;
   z-index: 10;
+  ul {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .menuShow {
@@ -764,6 +776,10 @@ body {
   font-size: 1.6rem;
   font-weight: bold;
   color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
   padding: 1rem 1rem 0.5rem 1rem;
 }
 .food-address {
@@ -906,6 +922,7 @@ body {
   background: white;
   padding: 1rem;
   ul {
+    display: flex;
     flex-direction: column;
 
     li {
@@ -1139,12 +1156,15 @@ body {
 }
 
 .rcontainer {
+  height: 100%;
   background: white;
   color: black;
-  display: flex;
-  justify-content: center;
+  width: 100%;
   .rs-btn {
     background: transparent;
+  }
+  .rs-row.r-bodyBoder {
+    height: 100%;
   }
 }
 
@@ -1186,17 +1206,15 @@ body {
   margin-top: 3rem;
 }
 .r-bodyContainer {
-  flex-direction: column;
-  align-items: center;
 }
 
 .r-bodyBoder {
-  border-radius: 20px;
   border: 1px solid black;
 }
 
 .r-menuLeft {
   ul {
+    display: flex;
     flex-direction: column;
     min-height: 50vh;
     position: relative;
@@ -1261,6 +1279,7 @@ body {
 }
 
 .spread-vertical {
+  height: 100%;
   border-right: 0.1rem solid rgb(99, 98, 98);
 }
 
@@ -1341,6 +1360,7 @@ body {
 }
 
 .submenu {
+  font-size: 1.6rem;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -1356,11 +1376,10 @@ body {
 .r-menuRight-btn-header {
   display: flex;
   justify-content: flex-end;
-  color: red;
   i {
     margin-top: 1.5rem;
     cursor: pointer;
-    font-size: 2rem;
+    font-size: 3rem;
     margin-right: 2rem;
   }
 }
@@ -2175,4 +2194,186 @@ body {
 
 .order-container {
   min-width: 70%;
+}
+
+.voucherCotnainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  box-shadow: 0 5px 10px;
+}
+.voucherDisable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(163, 161, 161, 0.466);
+  z-index: 20;
+}
+.voucher-left {
+  padding: 2rem;
+  width: 30%;
+  background: #26ab98;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+
+  &.disable {
+    box-shadow: 0 5px 10px;
+    background: linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 0.1875rem,
+      #bbb 0
+    );
+    color: white;
+  }
+  .list-dots {
+    position: absolute;
+    left: -10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    .dots {
+      width: 20px;
+      height: 20px;
+      background: #f1f2f4;
+      border-radius: 50%;
+    }
+  }
+}
+.voucher-right {
+  flex: 1;
+  height: 100%;
+  background: red;
+  background-color: white;
+  border-left: none;
+  box-shadow: 0 5px 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  justify-content: space-between;
+  .vouvherRight-header {
+    display: flex;
+    justify-content: space-between;
+    span {
+      display: block;
+    }
+    i {
+      color: #363c42;
+    }
+    .vBtn {
+      padding: 0.5rem 2rem;
+      background: #363c42;
+      color: white;
+      font-size: 1.6rem;
+      text-align: center;
+      border-radius: 10px;
+    }
+  }
+  &.bottom {
+    align-items: center;
+  }
+}
+
+.voucher-detial {
+  color: black;
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+.voucher-exp {
+  font-weight: lighter;
+}
+.vContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.voucherList {
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 120px;
+  grid-gap: 2rem;
+}
+.fd-voucher {
+  background-color: #f1f2f4;
+  padding: 1rem;
+}
+
+.fd-listVoucher {
+  display: flex;
+  width: 60%;
+  margin: auto;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 992px) {
+  .fd-listVoucher {
+    display: grid;
+    width: 100%;
+
+    grid-auto-rows: 100px;
+  }
+  .voucherList {
+    padding: 2rem 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fit, 100px);
+    grid-gap: 1rem;
+  }
+  .voucherCotnainer {
+    font-size: 1rem;
+    .voucher-left {
+      font-size: 1.4rem;
+    }
+    .voucher-detial {
+      font-size: 1.4rem;
+    }
+    .bottom {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.rsm-container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+}
+
+.widget-list {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.widget-item {
+  margin: 3rem;
+  flex: 1;
+  padding: 2.5rem 5rem;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 3rem;
+}
+.widget-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2.5rem;
+  i {
+    font-size: 6rem;
+  }
 }

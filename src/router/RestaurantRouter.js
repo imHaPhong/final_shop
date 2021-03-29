@@ -1,7 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import Home from "../components/Restaurant/Home";
 import Menu from "../components/Restaurant/Menu";
 import Order from "../components/Restaurant/Order";
+import Widget from "../components/Restaurant/Widget";
 import RestaurantLogin from "../components/RestaurantLogin";
 import RestaurantLayout from "../layout/RestaurantLayout";
 
@@ -13,7 +15,17 @@ const RestaurantRouter = () => {
       </Route>
       <Route path="/restaurant" exact>
         <RestaurantLayout>
+          <Widget />
+        </RestaurantLayout>
+      </Route>
+      <Route path="/restaurant/menu" exact>
+        <RestaurantLayout>
           <Menu />
+        </RestaurantLayout>
+      </Route>
+      <Route path="/restaurant/setting" exact>
+        <RestaurantLayout>
+          <Home />
         </RestaurantLayout>
       </Route>
       <Route path="/restaurant/oder" exact>

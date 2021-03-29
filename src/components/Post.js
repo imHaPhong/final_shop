@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Icon } from "rsuite";
+import { Icon, Rate } from "rsuite";
 import { userVote } from "../middlerware/userMiddlerware";
 import { io } from "socket.io-client";
 import { Link } from "react-router-dom";
 import { socket } from "../config/socket";
 
 const Post = ({ data, user, userVote }) => {
-  const { _id, date, title, body, image = [], vote, tag, rId } = data;
+  const { _id, date, title, body, image = [], vote, tag, rId, rating } = data;
 
   const [listVote, setListVote] = useState([]);
 
@@ -42,7 +42,13 @@ const Post = ({ data, user, userVote }) => {
           ))}
         </div>
       )}
-      <span className="post-title">{title}</span>
+      <span className="post-title">
+        {title}
+        <span className="">
+          <Rate value={rating} readOnly size="sm" />{" "}
+        </span>
+      </span>
+
       <div className="post-detail">
         <span>
           <Icon icon="calendar-o" />
@@ -71,7 +77,7 @@ const Post = ({ data, user, userVote }) => {
           />{" "}
           {listVote.length}
         </div>
-        <div className="post-readmore">Continue Reading</div>
+        <div className="post-readmore"></div>
       </div>
       <div className="breakline"></div>
     </div>

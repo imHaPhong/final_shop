@@ -46,12 +46,14 @@ export const setUserInfo = (data) => async (dispatch) => {
 
 export const createPosts = (data, callback) => async (dispatch) => {
   var bodyFormData = new FormData();
+  console.log(data.rating);
   data.img.map((el) => bodyFormData.append("avatar", el.fileData));
-  bodyFormData.append("rName", "ryus ris");
+  bodyFormData.append("rName", data.tag);
   bodyFormData.append("title", data.title);
   bodyFormData.append("body", data.body);
   bodyFormData.append("tag", data.tag);
   bodyFormData.append("rId", data.rId);
+  bodyFormData.append("rating", data.rating);
 
   const res = await axiouInst.post("/user/newPost", bodyFormData, config);
   console.log(res);
@@ -223,4 +225,19 @@ export const userGetOderInfo = (id) => async () => {
   const res = await axiouInst.get(`/user/oderInfo/${id}`);
   console.log(res);
   return res.data.oderInfo;
+};
+
+export const userLoadVoucher = (id) => async () => {
+  const res = await axiouInst.get("/user/loadVoucher");
+  return res.data.listVoucher;
+};
+
+export const userGetVoucher = (id) => async () => {
+  const res = await axiouInst.post("/user/getvoucher", { vId: id });
+  return res.data;
+};
+
+export const getOwnVoucher = () => async () => {
+  const res = await axiouInst.get("/user/ownVoucher");
+  return res.data.listVoucher;
 };

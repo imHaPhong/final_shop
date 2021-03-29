@@ -106,9 +106,22 @@ const Checking = ({ userGetOderInfo, user }) => {
               </div>
               {oder && oder.dish.map((el) => <OderSubItem subData={el} />)}
               <div className="c-footer">
+                {oder.discount > 0 && (
+                  <span className="c-footer-item">
+                    <span className="c-footer-title">Total</span>
+                    <span className="c-footer-total"> {oder.total}</span>
+                  </span>
+                )}
+                {oder.discount > 0 && (
+                  <span className="c-footer-item">
+                    <span className="c-footer-title">Discount</span>
+                    <span className="c-footer-total"> {oder.discount}</span>
+                  </span>
+                )}
+
                 <span className="c-footer-item">
-                  <span className="c-footer-title">Total</span>
-                  <span className="c-footer-total"> {oder.total}</span>
+                  <span className="c-footer-title">Final total</span>
+                  <span className="c-footer-total"> {oder.finaTotal}</span>
                 </span>
                 {/* <span className="c-footer-item">
                   <span className="c-footer-title">Payment type</span>

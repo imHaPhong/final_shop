@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import TextareaAutosize from "react-autosize-textarea";
 import { connect } from "react-redux";
-import { Icon, Loader, Uploader } from "rsuite";
+import { Icon, Loader, Rate, Uploader } from "rsuite";
 import useOutsideClick from "../utilities/custom-hooks/outSideClick";
 import { createPosts } from "../middlerware/userMiddlerware";
 import PostFindRestaurant from "./PostFindRestaurant";
@@ -19,6 +19,8 @@ const CreatePost = ({ createPosts }) => {
 
   const [address, setAddress] = useState({});
 
+  const [rateing, setRateing] = useState(0);
+
   const textChangeHandler = (e) => {
     setValue({ ...value, body: e.target.value });
   };
@@ -33,6 +35,7 @@ const CreatePost = ({ createPosts }) => {
       setShow(false);
     }
   });
+  const ratingRef = useRef();
 
   const userSubmit = () => {
     setLoading(true);
@@ -42,6 +45,7 @@ const CreatePost = ({ createPosts }) => {
       img: fileData,
       tag: address.rName,
       rId: address.id,
+      rating: rateing,
     };
     createPosts(data, () => {
       setShow(false);
@@ -84,6 +88,17 @@ const CreatePost = ({ createPosts }) => {
         onFocus={() => setShow(true)}
         placeholder="Say some thing..."
       />
+      {show && (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span style={{ padding: " 0 21px" }}>Rating:</span>
+          <Rate
+            defaultValue={rateing}
+            allowHalf
+            value={rateing}
+            onChange={(e) => setRateing(e)}
+          />
+        </div>
+      )}
       {fileData && (
         <div className="p-list-img">
           {fileData.map((file) => (

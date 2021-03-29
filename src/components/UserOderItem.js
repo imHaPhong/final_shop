@@ -26,7 +26,7 @@ const UserOderItem = ({ oderData }) => {
       </div>
       <div className="u-listOder-footer">
         <span className="u-listOder-footer-total">
-          Total: <span className="ul-total-price">$ {oderData.total}</span>
+          Total: <span className="ul-total-price">$ {oderData.finaTotal}</span>
         </span>
         <span>
           <Link to={`/user/checking/${oderData._id}`}>

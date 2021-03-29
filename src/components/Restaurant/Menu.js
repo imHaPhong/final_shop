@@ -112,7 +112,6 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
 
   return (
     <div className="rcontainer r-bodyContainer">
-      <h3>Menu</h3>
       <Modal show={open}>
         <Modal.Title>Delete list category?</Modal.Title>
         <Modal.Body>
@@ -138,16 +137,16 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
           </ButtonToolbar>
         </Modal.Footer>
       </Modal>
-      <Grid>
-        <Row className="r-bodyBoder" gutter={0}>
-          <Col md={8} className="spread-vertical">
+      <Grid fluid style={{ height: "100%" }}>
+        <Row className="r-bodyBoder">
+          <Col xsHidden md={4} className="spread-vertical">
             <div className="r-menuLeft">
               <ul ref={listRef}>
                 <li
                   onMouseEnter={() => setTopHover(true)}
                   onMouseLeave={() => setTopHover(false)}
                 >
-                  <span>Danh sach</span>
+                  <span>Menu</span>
                   {topHover === true && (
                     <Icon
                       icon="plus"
@@ -195,7 +194,9 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
               </ul>
             </div>
           </Col>
-          <Col md={16}>
+          <Col xs={24} md={20} style={{ padding: "5rem" }}>
+            <Icon icon="angle-left" />
+            Back
             <div className="r-menuRight">
               <div className="r-menuRight-btn-header">
                 <Icon

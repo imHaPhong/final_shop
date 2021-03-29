@@ -12,6 +12,7 @@ import {
   Modal,
   Radio,
   RadioGroup,
+  Rate,
   Row,
 } from "rsuite";
 import { getPreOderAction } from "../store/action/oderAction/oderAction";
@@ -22,15 +23,18 @@ import {
   getRestaurantInfo,
   createrOder,
   deletePreOder,
+  getOwnVoucher,
 } from "../middlerware/userMiddlerware";
 import MyApp from "./Payal";
 import { useMediaQuery } from "../utilities/custom-hooks/useMediaQuery";
 import MDishItem from "./MDishItem";
 import { Link } from "react-router-dom";
+import Voucher from "./Voucher";
 
 const FoodDetail = ({
   deletePreOder,
   user,
+  getOwnVoucher,
   preOder,
   getRestaurantInfo,
   getPreOderAction,
@@ -43,6 +47,10 @@ const FoodDetail = ({
     restaurantName: "",
     address: "",
     menu: [],
+    avatar: "",
+    timeAcitve: [],
+    rating: 0,
+    numberRating: 0,
   });
 
   const [paymentType, setPaymentType] = useState("");
@@ -57,6 +65,39 @@ const FoodDetail = ({
     setAddress(listAddress);
   }, [user]);
 
+  const [voucher, listVoucher] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getOwnVoucher();
+      listVoucher(data);
+    };
+    getData();
+  }, []);
+
+  const [voucherId, setVoucherId] = useState();
+
+  const [hasVoucher, setHasVoucher] = useState(false);
+  const [voucherInfo, setVoucherInfo] = useState({
+    discount: 0,
+    finalTotal: 0,
+  });
+
+  const setIdClickHandler = (id, maxDiscount, discount) => {
+    console.log(id);
+    var temp = total * (discount / 100);
+    console.log(discount);
+    if (temp > maxDiscount) {
+      temp = maxDiscount;
+    }
+    setVoucherInfo({
+      discount: temp,
+      finalTotal: total - temp,
+    });
+    total = total - temp;
+    setHasVoucher(true);
+    setVoucherId(id);
+  };
   const onError = () => {};
 
   const onCancel = () => {};
@@ -76,6 +117,10 @@ const FoodDetail = ({
   };
 
   const userPayment = () => {
+    const deliveryAddress = address.filter((el) => el.isSelect === true);
+    if (deliveryAddress.length <= 0) {
+      return Alert.error("User must choose address", 3000);
+    }
     if (paymentType === "") {
       return Alert.error("You need choose payment", 3000);
     }
@@ -85,17 +130,16 @@ const FoodDetail = ({
     deletePreOder();
     setOpen(false);
 
-    const deliveryAddress = address.filter((el) => el.isSelect === true);
-    if (!deliveryAddress) {
-      return Alert.error("User must choose address", 3000);
-    }
     createrOder({
       rId: id,
       dish: preOder,
       total,
       deliveryAddress: deliveryAddress[0].title,
+      vId: voucherId || 0,
     });
-    Alert.success("Oder success", 3000);
+    Alert.success(<a href="/user/oder">Oder success</a>, 100000, () =>
+      console.log("Click")
+    );
   };
 
   useEffect(() => {
@@ -147,7 +191,6 @@ const FoodDetail = ({
       }));
     }
   };
-
   return (
     <>
       <div className="modal-center">
@@ -182,9 +225,21 @@ const FoodDetail = ({
                 ))}
               </div>
             </div>
-            <div className="mt-2">
+            <div className="fd-voucher mt-2">
               <span className="co-title">Voucher</span>
-              <Input type="text" />
+              <span className="fd-listVoucher">
+                <RadioGroup>
+                  {voucher &&
+                    voucher.map((el) => (
+                      <Voucher
+                        setIdClickHandler={setIdClickHandler}
+                        isDisable={el.minBill > total}
+                        isCheck={true}
+                        voucherData={el}
+                      />
+                    ))}
+                </RadioGroup>
+              </span>
             </div>
             <div className="mt-2">
               <FormGroup controlId="radioList">
@@ -203,11 +258,22 @@ const FoodDetail = ({
             <div className="co-foodter">
               <span className="co-price">
                 <span className="co-price-title">Tong thanh toan</span>
-                <span className="co-totalPrice">{total}</span>
+                {!hasVoucher ? (
+                  <span className="co-totalPrice">{total}</span>
+                ) : (
+                  <>
+                    <span className="co-totalPrice">{total}</span>
+
+                    <div className="co-totalPrice">{voucherInfo.discount}</div>
+                    <div className="co-totalPrice">
+                      {voucherInfo.finalTotal}
+                    </div>
+                  </>
+                )}
               </span>
               {paymentType === "Payal" ? (
                 <MyApp
-                  total={total}
+                  total={voucherInfo.finalTotal}
                   onSuccess={onSuccess}
                   onCancel={onCancel}
                   onError={onError}
@@ -222,66 +288,73 @@ const FoodDetail = ({
         </Modal>
       </div>
       <Header />
-      <div className="fd-container ">
-        {/* <div className="fd-hero">
-          <div className="fd-hero-img">
-            <img
-              src="https://images.foody.vn/res/g76/758862/prof/s640x400/foody-upload-api-foody-mobile-thuy-beo-jpg-180713113040.jpg"
-              alt="food detail"
-            />
-          </div>
-          <div className="fd-hero-detail">
-            <div>
-              <span className="fd-name">{restaurantData.restaurantName}</span>
-              <span className="fd-address">{restaurantData.address}</span>
-              <div className="fd-rating">
-                <Icon icon="star" />
-                <Icon icon="star" />
-                <div className="rating-count">100+</div>
-              </div>
-              <div className="fd-view-review">View review</div>
-              <div className="fd-detail">
-                <span className="fd-active">
-                  <span className="dot"></span>
-                  <span>Open</span>
+      {isMoblie ? (
+        <div className="fd-container ">
+          <div className="m-fd-hero">
+            <img src={restaurantData.avatar} alt="" />
+            <div className="m-fd-detail">
+              <Link to="/user/listRestaurant">
+                <Icon icon="angle-left" />
+              </Link>
+              <span>
+                <span className="m-fd-name">
+                  {restaurantData.restaurantName}
                 </span>
-                <span className="fd-time-open">
-                  <Icon icon="clock-o" />
-                  8:00 - 9:00
-                </span>
-              </div>
-            </div>
+                <span className="m-fd-addressContainer">
+                  <span className="m-fd-address">{restaurantData.address}</span>
 
-            <div className="fd-hero-detail-footer">
-              <span className="fd-detail_title">Prepare</span>
-              <span>12 Min</span>
-            </div>
-          </div>
-        </div> */}
-
-        <div className="m-fd-hero">
-          <img
-            src="https://images.foody.vn/res/g76/758862/prof/s640x400/foody-upload-api-foody-mobile-thuy-beo-jpg-180713113040.jpg"
-            alt=""
-          />
-          <div className="m-fd-detail">
-            <Link to="/user/listRestaurant">
-              <Icon icon="angle-left" />
-            </Link>
-            <span>
-              <span className="m-fd-name">{restaurantData.restaurantName}</span>
-              <span className="m-fd-addressContainer">
-                <span className="m-fd-address">{restaurantData.address}</span>
-
-                <span className="isOpen">
-                  <Icon icon="circle" />
-                  Open
+                  <span className="isOpen">
+                    <Icon icon="circle" />
+                    Open
+                  </span>
                 </span>
               </span>
-            </span>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="fd-container">
+          <div className="fd-hero">
+            <div className="fd-hero-img">
+              <img src={restaurantData.avatar} alt="food detail" />
+            </div>
+            <div className="fd-hero-detail">
+              <div>
+                <span className="fd-name">{restaurantData.restaurantName}</span>
+                <span className="fd-address">{restaurantData.address}</span>
+                <div className="fd-rating">
+                  <Rate value={restaurantData.rating} allowHalf readOnly />
+                  <div className="rating-count">
+                    {restaurantData.numberRating}
+                  </div>
+                </div>
+                <div className="fd-view-review">
+                  <Link to={`/user/tag/${restaurantData.restaurantName}`}>
+                    View review
+                  </Link>
+                </div>
+                <div className="fd-detail">
+                  <span className="fd-active">
+                    <span className="dot"></span>
+                    <span>Open</span>
+                  </span>
+                  <span className="fd-time-open">
+                    <Icon icon="clock-o" />
+                    {restaurantData.timeAcitve[0]} -{" "}
+                    {restaurantData.timeAcitve[1]}
+                  </span>
+                </div>
+              </div>
+
+              <div className="fd-hero-detail-footer">
+                <span className="fd-detail_title">Prepare</span>
+                <span>12 Min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {!isMoblie && (
         <div className="fd-m-container">
           <div className="fd-menu">
@@ -443,9 +516,17 @@ const FoodDetail = ({
                   <Icon icon="inbox" />
                   <span className="qtn-preOder">{preOder.length}</span>
                 </span>
-                <span style={{ fontWeight: "600", fontSize: "1.5rem" }}>
-                  {total}
-                </span>
+                {!hasVoucher && (
+                  <span style={{ fontWeight: "600", fontSize: "1.5rem" }}>
+                    {total}
+                  </span>
+                )}
+                {hasVoucher && (
+                  <span style={{ fontWeight: "600", fontSize: "1.5rem" }}>
+                    {voucherInfo.discount}
+                    {voucherInfo.finalTotal}
+                  </span>
+                )}
               </span>
               <span className="m-preOderList-left" onClick={onUserOder}>
                 Giao Hang <Icon icon="angle-right" />{" "}
@@ -470,4 +551,5 @@ export default connect(mapStateToProps, {
   getPreOderAction,
   getRestaurantInfo,
   deletePreOder,
+  getOwnVoucher,
 })(FoodDetail);

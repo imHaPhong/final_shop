@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import {
   Button,
@@ -21,8 +21,7 @@ const MSetting = ({ user, userUpdate, userAddAddress }) => {
   const headerRef = useRef();
 
   const [isEdit, setIsEdit] = useState(false);
-
-  const [usenameInput, setUserNameInput] = useState("");
+  const [usenameInput, setUserNameInput] = useState("user.username");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     currentPassword: "",
@@ -30,7 +29,9 @@ const MSetting = ({ user, userUpdate, userAddAddress }) => {
     cNewPassword: "",
   });
   const [useAddress, setUserAddress] = useState("");
-
+  useEffect(() => {
+    setUserNameInput(user.username);
+  }, [user]);
   const useUpdateUsername = async () => {
     setIsEdit(false);
     setLoading(true);
@@ -51,6 +52,7 @@ const MSetting = ({ user, userUpdate, userAddAddress }) => {
   };
 
   const userAddAddressHandle = () => {
+    setUserAddress("");
     userAddAddress({ address: useAddress });
   };
 

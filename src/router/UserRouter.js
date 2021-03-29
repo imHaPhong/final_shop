@@ -12,6 +12,8 @@ import UserOder from "../components/UserOder";
 import UserHashTag from "../components/UserHashTag";
 import MSetting from "../components/MSetting";
 import Checking from "../components/Checking";
+import { Notification } from "rsuite";
+import VoucherPage from "../components/VoucherPage";
 
 const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
   const [isShow, setIsShow] = useState(false);
@@ -35,6 +37,7 @@ const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
   }, [auth.err]);
 
   useEffect(() => {}, []);
+
   return (
     <>
       {auth.err.error && isShow && (
@@ -62,6 +65,9 @@ const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
         </Route>
         <Route path="/user" exact>
           <Home />
+        </Route>
+        <Route path="/user/page" exact>
+          <VoucherPage />
         </Route>
         <Route path="/user/setting" exact>
           <MSetting />
