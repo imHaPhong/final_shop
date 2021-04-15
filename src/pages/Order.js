@@ -3,6 +3,7 @@ import { Carousel } from "rsuite";
 import FoodDetail from "../components/FoodDetail";
 import Header from "../components/Header";
 import ListFood from "../components/ListFood";
+import LoginWithFb from "../components/LoginWithFb";
 import { useMediaQuery } from "../utilities/custom-hooks/useMediaQuery";
 
 const Order = () => {
@@ -73,6 +74,7 @@ const Order = () => {
         <span className="oder-header">Near you</span>
         <ListFood />
       </div>
+      <LoginWithFb />
     </div>
   );
 };

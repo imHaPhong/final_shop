@@ -80,19 +80,19 @@ const FoodDetail = ({
   const [hasVoucher, setHasVoucher] = useState(false);
   const [voucherInfo, setVoucherInfo] = useState({
     discount: 0,
+    tempTotal: total,
     finalTotal: 0,
   });
 
   const setIdClickHandler = (id, maxDiscount, discount) => {
-    console.log(id);
-    var temp = total * (discount / 100);
-    console.log(discount);
+    var temp = voucherInfo.tempTotal * (discount / 100);
     if (temp > maxDiscount) {
       temp = maxDiscount;
     }
     setVoucherInfo({
+      tempTotal: voucherInfo.tempTotal,
       discount: temp,
-      finalTotal: total - temp,
+      finalTotal: voucherInfo.tempTotal - temp,
     });
     total = total - temp;
     setHasVoucher(true);
@@ -106,6 +106,11 @@ const FoodDetail = ({
     setOpen(false);
     deletePreOder();
     createrOder({ rId: id, dish: preOder, total });
+    setVoucherInfo({
+      tempTotal: 0,
+      discount: 0,
+      finalTotal: 0,
+    });
     Alert.success("Oder success", 3000);
   };
 
@@ -150,10 +155,13 @@ const FoodDetail = ({
     getData();
     getPreOderAction(id);
   }, []);
-  preOder.map((el) => {
-    total += el.price * el.qtn;
-  });
-
+  useEffect(() => {
+    preOder.map((el) => {
+      total += el.price * el.qtn;
+      setVoucherInfo((p) => ({ ...p, tempTotal: total }));
+      console.log(voucherInfo);
+    });
+  }, [preOder]);
   const [open, setOpen] = useState(false);
 
   const setIsOpen = () => {
@@ -191,6 +199,7 @@ const FoodDetail = ({
       }));
     }
   };
+  console.log(voucherInfo.finalTotal);
   return (
     <>
       <div className="modal-center">
@@ -233,7 +242,7 @@ const FoodDetail = ({
                     voucher.map((el) => (
                       <Voucher
                         setIdClickHandler={setIdClickHandler}
-                        isDisable={el.minBill > total}
+                        isDisable={el.minBill > voucherInfo.tempTotal}
                         isCheck={true}
                         voucherData={el}
                       />
@@ -259,10 +268,14 @@ const FoodDetail = ({
               <span className="co-price">
                 <span className="co-price-title">Tong thanh toan</span>
                 {!hasVoucher ? (
-                  <span className="co-totalPrice">{total}</span>
+                  <span className="co-totalPrice">
+                    {voucherInfo.finalTotal}
+                  </span>
                 ) : (
                   <>
-                    <span className="co-totalPrice">{total}</span>
+                    <span className="co-totalPrice">
+                      {voucherInfo.tempTotal}
+                    </span>
 
                     <div className="co-totalPrice">{voucherInfo.discount}</div>
                     <div className="co-totalPrice">
@@ -414,7 +427,7 @@ const FoodDetail = ({
                     </div>
                     <div className="fd-total">
                       <div>Total</div>
-                      <span>{total}</span>
+                      <span>{voucherInfo.tempTotal}</span>
                     </div>
                     <div
                       className={`fd-order-now ${
