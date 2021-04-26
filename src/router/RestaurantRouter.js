@@ -4,15 +4,33 @@ import Home from "../components/Restaurant/Home";
 import Menu from "../components/Restaurant/Menu";
 import Order from "../components/Restaurant/Order";
 import Widget from "../components/Restaurant/Widget";
-import RestaurantLogin from "../components/RestaurantLogin";
+import RestaurantLogin from "../components/Restaurant/RestaurantLogin";
 import RestaurantLayout from "../layout/RestaurantLayout";
+import { connect } from "react-redux";
+import { restaurantInfoReducer } from "../store/reducer/restaurantInfoReducer";
+import  { Redirect } from 'react-router-dom'
+import {checkToken} from '../middlerware/restaurantMiddleware'
 
-const RestaurantRouter = () => {
+
+const RestaurantRouter = ({isLogin, checkToken}) => {
+  if(!localStorage.getItem("auth_token")) {
+    return <Redirect to='/rLogin'  />
+  }   
+
+  const data = async () => {
+    try {
+      await checkToken()
+    } catch (error) {
+      window.location.href = "/rLogin"
+    }
+  }
+  data()
+
   return (
     <Switch>
-      <Route path="/restaurant/login">
+      {/* <Route path="/restaurant/login">
         <RestaurantLogin />
-      </Route>
+      </Route> */}
       <Route path="/restaurant" exact>
         <RestaurantLayout>
           <Widget />
@@ -42,4 +60,10 @@ const RestaurantRouter = () => {
   );
 };
 
-export default RestaurantRouter;
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.restaurantInfo.isLogin
+  }
+} 
+
+export default connect(mapStateToProps, {checkToken})(RestaurantRouter);

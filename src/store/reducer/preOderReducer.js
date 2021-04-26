@@ -36,7 +36,6 @@ export const oderReducer = (state = [], action) => {
       state = state.filter((el) => el !== null);
       return state;
     case deletePreoder:
-      console.log(":dd");
       state = [];
       return state;
     default:

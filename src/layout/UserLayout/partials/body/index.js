@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Col, Grid, Row } from "rsuite";
-import Post from "../../../../components/Post";
 import BodyLeft from "../bodyleft";
 import BodyRight from "./bodyright";
 

@@ -9,18 +9,17 @@ const config = {
 };
 
 export const Login = (data) => async (dispatch) => {
+  console.log("alo");
   const dataSend = {
     email: data.email,
     password: data.password,
   };
-
   try {
     const request = await axiouInst.post("/login", dataSend, config);
     const token = request.data.token;
     localStorage.setItem("auth_token", token);
     dispatch(loginSucess(token));
     dispatch(userInfo(request.data.user));
-    // window.location.href = "/user";
   } catch (error) {
     dispatch(loginFail(error));
   }

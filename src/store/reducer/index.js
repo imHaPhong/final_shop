@@ -5,6 +5,7 @@ import { oderReducer } from "./preOderReducer";
 import { managerOderReducer } from "./managerOderReducer";
 import userReducer from "./userReducer";
 import { restaurantReducer } from "./restaurantReducer";
+import { restaurantInfoReducer } from "./restaurantInfoReducer";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   preOder: oderReducer,
   oderInfo: managerOderReducer,
   listRestaurant: restaurantReducer,
+  restaurantInfo: restaurantInfoReducer,
 });

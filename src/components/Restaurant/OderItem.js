@@ -16,7 +16,10 @@ const OderItem = ({ setData, oderData, change2Processing }) => {
       <span className="oi-title">
         <span className="oi-title-header">
           <span>Oder: {oderData._id}</span>
+          <span>
+          <Icon icon="close" onClick={() => userClickHandler(oderData._id)} />
           <Icon icon="check" onClick={() => userClickHandler(oderData._id)} />
+          </span>
         </span>
 
         <span>

@@ -1,4 +1,5 @@
 import { axiouInst } from "../config/axiosInstance";
+import { restaurantLogin } from "../store/action/restaurantInfo/restaurantInfoAction";
 
 const config = {
   headers: {
@@ -16,13 +17,27 @@ export const createAccount = (data) => async (dispatch) => {
 };
 export const restaunrantLogin = (data) => async (dispatch) => {
   const res = await axiouInst.post("/restaurant/signin", data);
+  dispatch(restaurantLogin())
   return res.data;
 };
 
 export const getRestaurantInfo = () => async (dispatch) => {
+try {
   const res = await axiouInst.get("/restaurant");
-  // console.log(res);
   return res.data;
+} catch (error) { 
+  return Promise.reject("Invalid token");
+  
+}
+};
+export const checkToken = () => async (dispatch) => {
+try {
+  const res = await axiouInst.get("/restaurant/checkToken");
+  return res.data;
+} catch (error) { 
+  return Promise.reject("Invalid token");
+  
+}
 };
 
 export const addMenuTitle = (data) => async (dispatch) => {
@@ -107,3 +122,8 @@ export const restaurantUpdateInfo = (data) => async () => {
     config
   );
 };
+
+export const addAmount = (data) => async () => {
+  const res = await axiouInst.post('/restaurant/addAmount', data)
+  
+}

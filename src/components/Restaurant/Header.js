@@ -1,8 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, ButtonGroup, Dropdown, Icon, IconButton } from "rsuite";
 
-const Header = () => {
+const Header = (state) => {
   return (
     <nav className="rcontainer">
       <div className="rheader-container">
@@ -50,5 +51,10 @@ const Header = () => {
     </nav>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    state,
+  };
+};
 
-export default Header;
+export default connect(mapStateToProps)(Header);

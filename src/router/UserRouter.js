@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router";
-import Me from "../components/Me";
-import Home from "../pages/Home";
+import Me from "../components/User/Me";
 import { getUserInfo, setUserInfo } from "../middlerware/userMiddlerware";
-import CModal from "../components/CModal";
-import Order from "../pages/Order";
-import FoodDetail from "../components/FoodDetail";
-import CreateAccountForm from "../components/CreateAccountForm";
-import UserOder from "../components/UserOder";
-import UserHashTag from "../components/UserHashTag";
-import MSetting from "../components/MSetting";
-import Checking from "../components/Checking";
+import CModal from "../components/User/CModal";
+import FoodDetail from "../components/User/FoodDetail";
+import CreateAccountForm from "../components/User/CreateAccountForm";
+import UserOder from "../components/User/UserOder";
+import UserHashTag from "../components/User/UserHashTag";
+import MSetting from "../components/User/MSetting";
+import Checking from "../components/User/Checking";
 import { Notification } from "rsuite";
-import VoucherPage from "../components/VoucherPage";
+import VoucherPage from "../components/User/VoucherPage";
+import Home from "../pages/user/Home";
+import Order from "../pages/user/Order";
+import GetNearRestaurant from "../components/User/GetNearRestaurant";
 
 const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
   const [isShow, setIsShow] = useState(false);
@@ -68,6 +69,9 @@ const UserRouter = ({ getUserInfo, auth, setUserInfo }) => {
         </Route>
         <Route path="/user/page" exact>
           <VoucherPage />
+        </Route>
+        <Route path="/user/nearme" exact>
+          <GetNearRestaurant />
         </Route>
         <Route path="/user/setting" exact>
           <MSetting />

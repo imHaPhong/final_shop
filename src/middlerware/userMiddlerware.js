@@ -1,6 +1,6 @@
 import axios from "axios";
 import { axiouInst } from "../config/axiosInstance";
-import { isLogin } from "../store/action/authAction/authAction";
+import { isLogin, loginSucess } from "../store/action/authAction/authAction";
 import {
   addProOderAction,
   getPreOderAction,
@@ -16,15 +16,17 @@ import { listPost } from "../store/action/postAction/postAction";
 import { userInfo } from "../store/action/userAction/userAction";
 import { UserLogout } from "../store/action/userAction/useractionType";
 import { getListRestaurantAction } from "../store/action/restaurantAction/restaurantAction";
+import { Login } from "./authMiddlerware";
+
+const config1 = {
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
 
 const config = {
   headers: {
     "Content-Type": "multipart/form-data",
-  },
-};
-const config1 = {
-  headers: {
-    "Content-Type": "application/json",
   },
 };
 
@@ -76,7 +78,6 @@ export const getNewPost = (data) => async (dispatch) => {
     config
   );
   dispatch(listPost(""));
-
   return req.data.newPost;
 };
 
@@ -94,10 +95,12 @@ export const getPosts = (data) => (dispatch) => {
 };
 
 export const getAllRestaurant = (data) => async (dispatch) => {
-  const resData = await axiouInst.get("/user/getAllRestaurant");
+  const resData = await axiouInst.get("/getAllRestaurant");
   dispatch(getListRestaurantAction(resData.data.listRestaurant || []));
   return resData.data.listRestaurant;
 };
+
+
 
 export const isUserExist = (data) => async (dispatch) => {
   const res = await axiouInst.post("/check", data);
@@ -105,15 +108,27 @@ export const isUserExist = (data) => async (dispatch) => {
   return !res.data.isExist;
 };
 
-export const createAccount = (data) => async () => {
+export const createAccount = (data) => async (dispatch) =>  {
+  const password =  data.cpassword;
   delete data.cemail;
   delete data.cpassword;
   const res = await axiouInst.post("/signup", data);
+  
+  // await Login({email: res.data.user.email,password: res.data.user.password})
+  console.log(res.data.user.email);
+  const request = await axiouInst.post("/login", {email: res.data.user.email, password: password},{headers: {
+    "Content-Type": "application/json",
+  }});
+  console.log(request.data);
+  const token = request.data.token;
+  localStorage.setItem("auth_token", token);
+  dispatch(loginSucess(token));
+  dispatch(userInfo(request.data.user));
   return res.data;
 };
 
 export const getRestaurantInfo = (data) => async () => {
-  const resData = await axiouInst.get(`/user/getRestaurantInfo/${data}`);
+  const resData = await axiouInst.get(`/getRestaurantInfo/${data}`);
   return resData.data.restaurantInfo;
 };
 
@@ -200,6 +215,7 @@ export const getPostByData = (data) => async (dispatch) => {
 };
 
 export const userUpdate = (data, callback) => async (dispatch) => {
+  console.log("alo");
   const updateKey = Object.keys(data);
   const updateValue = Object.values(data);
   var bodyFormData = new FormData();
@@ -241,3 +257,16 @@ export const getOwnVoucher = () => async () => {
   const res = await axiouInst.get("/user/ownVoucher");
   return res.data.listVoucher;
 };
+
+export const getLocation = (data) => async() => {
+  const res = await axiouInst.post("/user/getLocation", data);
+
+}
+
+export const loginSendToken = (data) => async (dispatch) => {
+  const res = await axiouInst.post("/loginWith", {token: data});
+  const token = res.data.token;
+  localStorage.setItem("auth_token", token);
+  dispatch(loginSucess(token));
+  dispatch(userInfo(res.data.user));
+}

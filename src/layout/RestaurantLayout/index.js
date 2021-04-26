@@ -90,29 +90,34 @@ const RestaurantLayout = ({ children }) => {
                 size="lg"
                 style={{ verticalAlign: 0 }}
               />
-              <span style={{ marginLeft: 12 }}> BRAND</span>
+              <span style={{ marginLeft: 12 }}> myFood restaurant</span>
             </div>
           </Sidenav.Header>
           <Sidenav.Body>
             <Nav>
-              <Link to="/restaurant/">
-                <Nav.Item eventKey="1" active icon={<Icon icon="dashboard" />}>
+              <Link to="/restaurant/"  >
+                <Nav.Item eventKey="1"   icon={<Icon icon="dashboard" />}>
                   Home
                 </Nav.Item>
               </Link>
               <Link to="/restaurant/menu">
-                <Nav.Item eventKey="1" active icon={<Icon icon="dashboard" />}>
+                <Nav.Item eventKey="1" icon={<Icon icon="book2" />}>
                   Menu
                 </Nav.Item>
               </Link>
               <Link to="/restaurant/oder">
-                <Nav.Item eventKey="2" icon={<Icon icon="group" />}>
-                  Dish oder
+                <Nav.Item eventKey="2" icon={<Icon icon="order-form" />}>
+                  List order
                 </Nav.Item>
               </Link>
               <Link to="/restaurant/processing">
-                <Nav.Item eventKey="2" icon={<Icon icon="group" />}>
-                  Dish processing
+                <Nav.Item eventKey="2" icon={<Icon icon="th-list" />}>
+                List order processing
+                </Nav.Item>
+              </Link>
+              <Link to="/restaurant/processing">
+                <Nav.Item eventKey="2" icon={<Icon icon="th-list" />}>
+                Orders have been delivered
                 </Nav.Item>
               </Link>
             </Nav>
@@ -122,7 +127,7 @@ const RestaurantLayout = ({ children }) => {
       </Sidebar>
       <Container>
         <Header>
-          <h1>List oder</h1>
+          <h1>List order</h1>
         </Header>
         <Content>{children}</Content>
         <Footer></Footer>

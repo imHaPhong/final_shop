@@ -1,7 +1,6 @@
 import React from "react";
-import Header from "../../components/Header";
-import Post from "../../components/Post";
-import Posts from "../../components/Posts";
+import Header from "../../components/User/Header";
+
 import UserBody from "./partials/body";
 
 export const UserLayout = ({ children }) => {

@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Condensed&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Indie+Flower&family=Roboto+Condensed&display=swap");
+html {
+  font-family: "Indie Flower", cursive;
+  font-family: "Mulish", sans-serif;
+  font-family: "Noto Sans", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 62.5%;
+  font-weight: 500;
+}
+
+$primary-color: #187caa;
+$secondary-color: #0a6096;
+
+.mr-1 {
+  margin-right: 1rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.boder {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}

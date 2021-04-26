@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Icon } from "rsuite";
+import LoginWithFb from "../../../../components/User/LoginWithFb";
 import { Login } from "../../../../middlerware/authMiddlerware";
 import { getUserInfo } from "../../../../middlerware/userMiddlerware";
 
@@ -38,6 +40,11 @@ const BodyLeft = ({ user, Login, auth }) => {
       submitHandler();
     }
   };
+  let history = useHistory();
+
+  const loginWithGg = () => {
+
+  }
 
   return (
     <div className="boder">
@@ -73,13 +80,15 @@ const BodyLeft = ({ user, Login, auth }) => {
                 value={state.password}
               />
               <div className="user-login-footer">
-                <span className="btn" onClick={submitHandler}>
+                <span className="btn" onClick={submitHandler} style={{display:"block", textAlign:"center"}}>
                   Login
                 </span>
-                <div>
-                  <Link to="/register">Register</Link>
-                  <Link to="/passwordRecovory">Forgot password</Link>
-                </div>
+                <span style={{textAlign:"center", margin: "10px 0"}}>
+                  Or
+                </span>
+                <span  onClick={loginWithGg} style={{display:"block", textAlign:"center"}}>
+                  <LoginWithFb/>
+                </span>
               </div>
             </div>
           )}

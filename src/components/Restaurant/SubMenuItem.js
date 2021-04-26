@@ -10,6 +10,7 @@ const SubMenuItem = ({
   setIsEditing,
   userEditMenu,
   setRenderList,
+  setRightMenuTitle
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -40,7 +41,10 @@ const SubMenuItem = ({
           onChange={(e) => setInputValue(e.target.value)}
         />
       ) : (
-        <span onClick={() => setRenderList(itemValue.id)}>{inputValue}</span>
+        <span onClick={() =>{
+          setRenderList(itemValue.id)
+          setRightMenuTitle(inputValue)
+        } }>{inputValue}</span>
       )}
       {isHover && (
         <span>

@@ -18,6 +18,7 @@ import {
   userAddMenu,
 } from "../../middlerware/restaurantMiddleware";
 import SubMenuItem from "./SubMenuItem";
+import { Redirect } from "react-router-dom";
 
 const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
   const [menu, setMenu] = useState([]);
@@ -28,6 +29,8 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
   const [itemHover, setItemHover] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const listRef = useRef();
+  const [rightMenutitle, setRightMenuTitle] = useState("")
+
 
   const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState("");
@@ -69,12 +72,17 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
 
   useEffect(() => {
     const getData = async () => {
-      let title = await getRestaurantInfo();
+      try {
+        let title = await getRestaurantInfo();
       var arr = title.menu.map((el) => ({
         id: el._id,
         menuTitle: el.menuTitle,
       }));
       setMenuTitlte(arr);
+      } catch (error) {
+        window.location.href = "/rLogin";
+
+      }
     };
     getData();
   }, []);
@@ -91,6 +99,10 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
       const data = await addMenuTitle({
         menuTitle: { menuTitle: addTitle.content },
       });
+      setAddTitle(p => ({
+        ...p,
+        content: ""
+      }))
       setMenuTitlte((p) => p.concat(data));
     };
     getData();
@@ -109,6 +121,12 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
     };
     getData();
   };
+
+  const userEnter = (e) => {
+    if(e.keyCode  === 13) {
+      userAddTitleHandle()
+    }
+  }
 
   return (
     <div className="rcontainer r-bodyContainer">
@@ -162,6 +180,7 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
                 {menuTitle.length > 0 &&
                   menuTitle.map((el, index) => (
                     <SubMenuItem
+                    setRightMenuTitle={setRightMenuTitle}
                       setRenderList={setRenderList}
                       setShow={setShow}
                       itemValue={el}
@@ -178,6 +197,7 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
                       type="text"
                       onChange={addTitleHandle}
                       value={addTitle.content}
+                      onKeyDown={(e) => userEnter(e)}
                     />
                     <Icon icon="check" onClick={userAddTitleHandle} />
                     <Icon
@@ -195,14 +215,14 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
             </div>
           </Col>
           <Col xs={24} md={20} style={{ padding: "5rem" }}>
-            <Icon icon="angle-left" />
-            Back
+        
             <div className="r-menuRight">
               <div className="r-menuRight-btn-header">
-                <Icon
+                <span>                {rightMenutitle || "Empty selection"}</span>
+                  {rightMenutitle !== "" &&    <Icon
                   icon="plus-square-o"
                   onClick={() => setIsAddSubMenu(true)}
-                />
+                />}
               </div>
               <MenuItem
                 renderList={renderList}
