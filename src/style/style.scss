@@ -2043,6 +2043,9 @@ body {
   }
   .u-oder-container {
     width: 100%;
+    box-shadow: 10px 10px 10px rgba(94, 93, 93, 0.219);
+    -webkit-box-shadow: 10px 10px 10px rgba(94, 93, 93, 0.219);
+    -ms-box-shadow: 10px 10px 10px rgba(94, 93, 93, 0.219);
   }
 
   .rs-modal {
@@ -2127,6 +2130,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
+  .rs-panel-title{
+   span{
+    font-size:3rem;
+    color: red !important;
+   }
+  }
   input {
     flex: 1;
     margin-right: 3rem;

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import TextareaAutosize from "react-autosize-textarea";
 import { connect } from "react-redux";
-import { Icon, Loader, Rate, Uploader } from "rsuite";
+import { Alert, Icon, Loader, Rate, Uploader } from "rsuite";
 import useOutsideClick from "../../utilities/custom-hooks/outSideClick";
 import { createPosts } from "../../middlerware/userMiddlerware";
 import PostFindRestaurant from "./PostFindRestaurant";
@@ -10,7 +10,7 @@ const CreatePost = ({ createPosts }) => {
   const [show, setShow] = useState(false);
   const [value, setValue] = useState({
     title: "",
-    body: "",
+    body: ""
   });
 
   const [fileData, setFileData] = useState([]);
@@ -38,7 +38,24 @@ const CreatePost = ({ createPosts }) => {
   const ratingRef = useRef();
 
   const userSubmit = () => {
+    if(value.title === "") {
+      Alert.info("Please enter a title")
+      return;
+    }
+    if(value.body === "") {
+      Alert.info("Please enter a body")
+      return;
+    }
+    if(value.rName === "") {
+      Alert.info("Please enter a restaurant name")
+      return;
+    }
+    if(rateing === 0) {
+      Alert.info("Please select rating")
+      return;
+    }
     setLoading(true);
+
     const data = {
       title: value.title,
       body: value.body,
@@ -49,10 +66,13 @@ const CreatePost = ({ createPosts }) => {
     };
     createPosts(data, () => {
       setShow(false);
-      setValue("");
+      setValue({ title: "",
+      body: ""});
       setFileData([]);
       setLoading(false);
+      setRateing(0)
     });
+    
   };
 
   const fileChange = (e) => {
@@ -87,6 +107,7 @@ const CreatePost = ({ createPosts }) => {
         onChangeCapture={textChangeHandler}
         onFocus={() => setShow(true)}
         placeholder="Say some thing..."
+        value={value.body}
       />
       {show && (
         <div style={{ display: "flex", alignItems: "center" }}>

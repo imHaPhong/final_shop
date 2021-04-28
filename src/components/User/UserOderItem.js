@@ -1,8 +1,10 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
 import OderSubItem from "../Restaurant/OderSubItem";
 
 const UserOderItem = ({ oderData }) => {
+  console.log(oderData);
   return (
     <div className="u-oder-container">
       <div className="u-oder-header">
@@ -26,7 +28,11 @@ const UserOderItem = ({ oderData }) => {
       </div>
       <div className="u-listOder-footer">
         <span className="u-listOder-footer-total">
-          Total: <span className="ul-total-price">$ {oderData.finaTotal}</span>
+          Total: <span className="ul-total-price">
+         
+            <NumberFormat value={oderData.finaTotal} displayType={'text'} thousandSeparator={true} /> đ
+
+            </span>
         </span>
         <span>
           <Link to={`/user/checking/${oderData._id}`}>

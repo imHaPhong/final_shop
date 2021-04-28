@@ -95,17 +95,17 @@ const RestaurantLayout = ({ children }) => {
           </Sidenav.Header>
           <Sidenav.Body>
             <Nav>
-              <Link to="/restaurant/"  >
+              <Link to="/admin/"  >
                 <Nav.Item eventKey="1"   icon={<Icon icon="dashboard" />}>
                   Home
                 </Nav.Item>
               </Link>
-              <Link to="/admin/restaurant">
+              <Link to="/admin/report">
                 <Nav.Item eventKey="1" icon={<Icon icon="book2" />}>
                   Restaurant reported
                 </Nav.Item>
               </Link>
-              <Link to="/restaurant/post">
+              <Link to="/admin/post">
                 <Nav.Item eventKey="2" icon={<Icon icon="order-form" />}>
                 Review post reported
                 </Nav.Item>

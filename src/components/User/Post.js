@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { ButtonToolbar, Dropdown, Icon, IconButton, Rate } from "rsuite";
-import { userVote } from "../../middlerware/userMiddlerware";
+import { Button, ButtonToolbar, Dropdown, Icon, IconButton, Input, Modal, Rate } from "rsuite";
+import { userVote, userSendReport } from "../../middlerware/userMiddlerware";
 import { io } from "socket.io-client";
 import { Link } from "react-router-dom";
 import { socket } from "../../config/socket";
 
-const Post = ({ data, user, userVote, isAdmin =false }) => {
+const Post = ({ data, user, userVote, isAdmin =true, userSendReport }) => {
   const { _id, date, title, body, image = [], vote, tag, rId, rating } = data;
 
   const [listVote, setListVote] = useState([]);
@@ -33,8 +33,36 @@ const Post = ({ data, user, userVote, isAdmin =false }) => {
     userVote({ vote: _id });
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const close = () => {
+    setIsOpen(false);
+  }
+
+  const [userInputValue, setUserInputValue] = useState('')
+
+  const userSendReportx = async () => {
+    await userSendReport({uId: user._id, pId: _id, content: userInputValue})
+  }
+
   return (
     <div className="post ">
+      <Modal size="md" show={isOpen} onHide={close}>
+          <Modal.Header>
+            <Modal.Title>Report</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Input type="text" value={userInputValue} onChange={(e) => setUserInputValue(e)}/>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={userSendReportx} appearance="primary">
+              Ok
+            </Button>
+            <Button onClick={close} appearance="subtle">
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
       {image.length !== 0 && (
         <div className="post-img-container">
           {image.map((img) => (
@@ -49,7 +77,7 @@ const Post = ({ data, user, userVote, isAdmin =false }) => {
         <Dropdown placement="bottomEnd" renderTitle={() => {
         return <Icon icon="ellipsis-h" />;
       }} noCaret>
-        <Dropdown.Item>New File</Dropdown.Item>
+        <Dropdown.Item onClick={() => setIsOpen(true)}>Reporter</Dropdown.Item>
         </Dropdown>
 
   </ButtonToolbar></div> : <div className="admin-action">
@@ -102,4 +130,4 @@ const mapStateToPorps = (state) => {
   };
 };
 
-export default connect(mapStateToPorps, { userVote })(Post);
+export default connect(mapStateToPorps, { userVote, userSendReport })(Post);

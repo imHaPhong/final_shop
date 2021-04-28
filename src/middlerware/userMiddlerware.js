@@ -156,7 +156,6 @@ export const getListOder = (data) => async (dispatch) => {
 export const getListRestaurant = (data) => async (dispatch) => {
   if (data === "") {
     const resData = await axiouInst.get("/user/getAllRestaurant");
-    console.log(resData);
     dispatch(getListRestaurantAction(resData.data.listRestaurant || []));
     return { listRestaurantName: [] };
   }
@@ -260,6 +259,7 @@ export const getOwnVoucher = () => async () => {
 
 export const getLocation = (data) => async() => {
   const res = await axiouInst.post("/user/getLocation", data);
+  return res.data.listRestaurant
 
 }
 
@@ -269,4 +269,24 @@ export const loginSendToken = (data) => async (dispatch) => {
   localStorage.setItem("auth_token", token);
   dispatch(loginSucess(token));
   dispatch(userInfo(res.data.user));
+}
+
+export const getPopulateRestaurant = () => async (dispatch) => {
+  const res = await axiouInst.get("/user/populateRestaurant");
+  return res.data
+}
+export const getNearRestaurant = (data) => async (dispatch) => {
+  const res = await axiouInst.post("/user/near", data);
+  return res.data
+}
+
+export const userSearch = (data) => async (dispatch) => {
+  console.log("alo");
+  const res = await axiouInst.post('/search', data)
+  return res.data.result
+}
+
+export const userSendReport = (data) => async (dispatch) => {
+  const res = await axiouInst.post('/user/reportPost', data)
+  console.log(res);
 }

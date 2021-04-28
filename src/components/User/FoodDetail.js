@@ -106,7 +106,7 @@ const FoodDetail = ({
   const onSuccess = () => {
     setOpen(false);
     deletePreOder();
-    createrOder({ rId: id, dish: preOder, total });
+    createrOder({ rId: id, dish: preOder, total:voucherInfo.finalTotal !== 0?  voucherInfo.finalTotal : voucherInfo.tempTotal });
     setVoucherInfo({
       tempTotal: 0,
       discount: 0,
@@ -135,14 +135,30 @@ const FoodDetail = ({
     }
     deletePreOder();
     setOpen(false);
+    console.log(voucherInfo);
+    if(voucherInfo.discount === 0) {
+      createrOder({
+        rId: id,
+        dish: preOder,
+        total:voucherInfo.tempTotal,
+        discount: 0,
+        finaTotal:voucherInfo.tempTotal,
+        deliveryAddress: deliveryAddress[0].title,
+        vId: voucherId || 0,
+      });
+    } else{
+      createrOder({
+        rId: id,
+        dish: preOder,
+        total: voucherInfo.tempTotal,
+        discount: voucherInfo.discount,
+        finaTotal:voucherInfo.finaTotal,
 
-    createrOder({
-      rId: id,
-      dish: preOder,
-      total,
-      deliveryAddress: deliveryAddress[0].title,
-      vId: voucherId || 0,
-    });
+        deliveryAddress: deliveryAddress[0].title,
+        vId: voucherId || 0,
+      });
+    }
+    
     Alert.success(<a href="/user/oder">Oder success</a>, 100000, () =>
       console.log("Click")
     );
@@ -202,9 +218,7 @@ const FoodDetail = ({
       }));
     }
   };
-  console.log(voucherInfo);
 
-  console.log(voucherInfo.finalTotal);
   return (
     <>
       <div className="modal-center">

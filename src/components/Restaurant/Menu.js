@@ -7,6 +7,7 @@ import {
   Grid,
   Icon,
   IconButton,
+  InputNumber,
   Modal,
   Row,
 } from "rsuite";
@@ -43,7 +44,15 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
   const [isReload, setIsReload] = useState(false);
   const [isAddSubMenu, setIsAddSubMenu] = useState(false);
   const userAddDish = async () => {
-    // console.log(renderList);
+    if(!userSelectFileRef.current.files[0]) {
+      Alert.info("Please choose dish image", 3000)
+      return
+    }
+    if(addDishValue.name === "") {
+      Alert.info("Please enter dish name", 3000)
+      return
+    }
+  
     const dataUpload = {
       img: userSelectFileRef.current.files[0],
       itemId: renderList,
@@ -57,8 +66,13 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
       "https://static.thenounproject.com/png/187803-200.png";
     setIsReload(!isReload);
   };
-
+  const uploadFile = ["image/jpeg","image/png", "image/jpg"]
   const userUploadImg = () => {
+    console.log();
+     if(!uploadFile.includes(userSelectFileRef.current.files[0].type)) {
+       Alert.info("Please select image file")
+       return
+     }
     var file = userSelectFileRef.current.files[0];
     addDishAvt.current.src = URL.createObjectURL(file);
   };
@@ -258,17 +272,18 @@ const Menu = ({ getRestaurantInfo, addMenuTitle, userDelete, userAddMenu }) => {
                     }
                   />
                   <label htmlFor="price">Price: </label>
-                  <input
-                    type="number"
+                  <div>
+                  <InputNumber
                     id="price"
                     value={addDishValue.price}
                     onChange={(e) =>
                       setAddDishValue((p) => ({
                         ...p,
-                        price: e.target.value,
+                        price: e
                       }))
                     }
                   />
+                  </div>
                   <span>
                     <Icon icon="check" onClick={userAddDish} />
                     <Icon icon="close" onClick={() => setIsAddSubMenu(false)} />

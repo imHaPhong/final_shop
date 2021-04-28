@@ -34,8 +34,7 @@ const RestaurantLogin = ({ formCheck, createAccount, restaunrantLogin,checkToken
   
   function showPosition(position) {
      ;
-    setFormData(p => ({ ...p, location: `${position.coords.latitude},
-    ${position.coords.longitude}`}))
+    setFormData(p => ({ ...p, location: `${position.coords.latitude},${position.coords.longitude}`}))
   }
 
   const addLocation = () => {
@@ -68,6 +67,8 @@ const RestaurantLogin = ({ formCheck, createAccount, restaunrantLogin,checkToken
     }
     if (form.current.check()) {
       let loginData;
+      formData.location =  formData.location.split(',')
+
       loginData = await createAccount(formData);
       console.log(loginData);
       if (loginData.isLogin) {
@@ -121,14 +122,14 @@ const RestaurantLogin = ({ formCheck, createAccount, restaunrantLogin,checkToken
           </FormGroup>
           <FormGroup>
             <ControlLabel>Password</ControlLabel>
-            <FormControl name="password" />
+            <FormControl name="password" type="password" />
             <HelpBlock tooltip>Required</HelpBlock>
           </FormGroup>
           {login === false && (
             <>
               <FormGroup>
                 <ControlLabel>Verify password</ControlLabel>
-                <FormControl name="verifyPassword" />
+                <FormControl type="password" name="verifyPassword" />
                 <HelpBlock tooltip>Required</HelpBlock>
               </FormGroup>
               <FormGroup>

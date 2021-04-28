@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import Header from "./Header";
+import {getNearRestaurant} from '../../middlerware/userMiddlerware'
+import { connect } from "react-redux";
 
-const GetNearRestaurant = () => {
+const GetNearRestaurant = ({getNearRestaurant}) => {
   const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
+  const [listRestaurant, setListRestaurant] = useState([])
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async function (position) {
+      const data = await getNearRestaurant( {lnt: position.coords.latitude, long: position.coords.longitude});
+      setListRestaurant(data);
+      console.log(listRestaurant);
+    });
+  },[])
 
   const K_WIDTH = 50;
   const K_HEIGHT = 50;
@@ -78,34 +90,20 @@ const GetNearRestaurant = () => {
           lng={105.88355039999999}
           text={"A"} /* Kreyser Avrora */
         />
-        <UserLocation
-          lat={21.116393099999998}
-          lng={105.88455038999999}
-          text={"A"} 
-        />
-        <UserLocation
-        
-          lat={21.139699995262546}
-          lng={105.87007012821003}
-          text={"A"} 
-        />
-        <UserLocation
-          lat={21.132869129040465}
-          lng={105.86511971103913}
-          text={"A"} 
-        />
-        <UserLocation
-        
-          lat={21.12403851828074}
-          lng={105.87667919083565}
-          text={"A"} 
-        />
+        {listRestaurant.length > 0 && listRestaurant.map(el => {
+            return <UserLocation
+            lat={el.location[0]}
+            lng={el.location[1]}
+            text={"A"} 
+          />
+        })}
+      
       </GoogleMapReact>
     </div>
   );
 };
 
-export default GetNearRestaurant;
+export default connect(null, {getNearRestaurant})(GetNearRestaurant);
 
 // import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 // import { Component } from "react";

@@ -15,6 +15,7 @@ const Order = ({getLocation}) => {
   useEffect(() => {
     // const height = document.querySelector(".nav-container").clientHeight;
     setHeight(height);
+    console.log("alo");
     navigator.geolocation.getCurrentPosition(function (position) {
       getLocation([position.coords.latitude,position.coords.longitude])
 
@@ -68,11 +69,11 @@ const Order = ({getLocation}) => {
       )}
       <div className="container order-container">
         <span className="oder-header">Near you</span>
-        <ListFood />
+        <ListFood filter="near" />
       </div>
       <div className="container order-container">
         <span className="oder-header">Most poplar</span>
-        <ListFood />
+        <ListFood filter="top" />
       </div>
       <div className="container order-container">
         <span className="oder-header">All</span>

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import {
+  Alert,
   Button,
   ControlLabel,
   Form,
@@ -52,11 +53,27 @@ const MSetting = ({ user, userUpdate, userAddAddress }) => {
   };
 
   const userAddAddressHandle = () => {
+    if(useAddress === "") {
+      Alert.info("Please add address")
+      return;
+    }
     setUserAddress("");
     userAddAddress({ address: useAddress });
   };
 
   const userUpdatePassword = async () => {
+    if(formData.currentPassword === "") {
+      Alert.info("Please enter current password")
+      return;
+    }
+    if(formData.newPassword === "") {
+      Alert.info("Please enter new password")
+      return;
+    }
+    if(formData.cNewPassword === "") {
+      Alert.info("Please enter confirm password")
+      return;
+    }
     if (formData.newPassword !== formData.cNewPassword) {
       return;
     }
@@ -155,7 +172,7 @@ const MSetting = ({ user, userUpdate, userAddAddress }) => {
               <FormControl type="password" name="newPassword" />
             </FormGroup>
             <FormGroup>
-              <ControlLabel>New password</ControlLabel>
+              <ControlLabel>Confirm password</ControlLabel>
               <FormControl type="password" name="cNewPassword" />
             </FormGroup>
             <Button block appearance="primary" onClick={userUpdatePassword}>
@@ -165,7 +182,7 @@ const MSetting = ({ user, userUpdate, userAddAddress }) => {
         </Panel>
         <Panel header="Address" collapsible bordered>
           {user.userAddress.map((el, index) => (
-            <div key={index}>{el}</div>
+            <div key={index} style={{margin: "10px 0",paddingBottom: "10px", borderBottom: "1px solid #333"}}>{el}</div>
           ))}
           <div className="m-setting-addrss">
             <Input

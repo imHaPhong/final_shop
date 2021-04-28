@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 
 const OderSubItem = ({ subData }) => {
   return (
@@ -13,7 +14,9 @@ const OderSubItem = ({ subData }) => {
             <span className="oi-qtn">x {subData.qtn}</span>
           </span>
         </span>
-        <span className="ol-list-item-price">$ {subData.price}</span>
+        <span className="ol-list-item-price">
+        <NumberFormat value={subData.price} displayType={'text'} thousandSeparator={true} /> đ
+        </span>
       </div>
     </>
   );

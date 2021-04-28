@@ -12,6 +12,8 @@ import { restaurantInfoReducer } from "../store/reducer/restaurantInfoReducer";
 import  { Redirect } from 'react-router-dom'
 import {checkToken} from '../middlerware/restaurantMiddleware'
 import RestaurantRp from "../pages/admin/RestaurantRp";
+import AdminPost from "../components/Admin/AdminPost";
+import Report from '../pages/admin/Report';
 
 
 const AdminRouter = () => {
@@ -23,9 +25,9 @@ const AdminRouter = () => {
           <AdminWidget />
         </AdminLayout>
       </Route>
-      <Route path="/admin/restaurant" exact>
+      <Route path="/admin/report" exact>
         <AdminLayout>
-        <RestaurantRp />
+        <Report />
 
         </AdminLayout>
       </Route>

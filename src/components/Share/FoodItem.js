@@ -3,7 +3,6 @@ import { Redirect, useHistory } from "react-router";
 import { Icon } from "rsuite";
 
 const FoodItem = ({ restaurantData }) => {
-  console.log(restaurantData);
   let history = useHistory();
   const clickHandler = () => {
     history.push(`/user/oder/${restaurantData._id}`);

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import NumberFormat from "react-number-format";
 import { connect } from "react-redux";
 import { Alert, Icon, Input } from "rsuite";
 import {
@@ -81,7 +82,7 @@ const MiTem = ({
           )}
         </div>
         {editMode === true ? (
-          <span className="r-menuItem-price">{inputValue.price}</span>
+          <span className="r-menuItem-price"> <NumberFormat value={inputValue.price} displayType={'text'} thousandSeparator={true}  /> đ</span>
         ) : (
           <Input
             type="number"
