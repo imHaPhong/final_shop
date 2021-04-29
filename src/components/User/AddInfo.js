@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Icon, Input, InputGroup } from "rsuite";
+import { Alert, Button, Icon, Input, InputGroup } from "rsuite";
 import { userAddAddress } from "../../middlerware/userMiddlerware";
 import Header from "./Header";
 
@@ -11,6 +11,10 @@ const AddInfo = ({userAddAddress}) => {
 
 
   const addAddress = () => {
+    if(value === "") {
+      Alert.warning("Please enter your address")
+      return
+    }
     userAddAddress({ address: value });
     setHasAddress(p => p.concat(value))
     setValue("")

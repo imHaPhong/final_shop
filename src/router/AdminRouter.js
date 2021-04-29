@@ -14,6 +14,7 @@ import {checkToken} from '../middlerware/restaurantMiddleware'
 import RestaurantRp from "../pages/admin/RestaurantRp";
 import AdminPost from "../components/Admin/AdminPost";
 import Report from '../pages/admin/Report';
+import AddVoucher from "../pages/admin/AddVoucher";
 
 
 const AdminRouter = () => {
@@ -31,9 +32,9 @@ const AdminRouter = () => {
 
         </AdminLayout>
       </Route>
-      <Route path="/admin/setting" exact>
+      <Route path="/admin/create" exact>
         <AdminLayout>
-          <Home />
+          <AddVoucher />
         </AdminLayout>
       </Route>
       <Route path="/admin/oder" exact>

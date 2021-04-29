@@ -41,6 +41,10 @@ const BodyLeft = ({ user, Login, auth }) => {
     }
   };
   let history = useHistory();
+  
+  const userRegister = () => {
+    history.push('/register')
+  }
 
   const loginWithGg = () => {
 
@@ -88,6 +92,9 @@ const BodyLeft = ({ user, Login, auth }) => {
                 </span>
                 <span  onClick={loginWithGg} style={{display:"block", textAlign:"center"}}>
                   <LoginWithFb/>
+                </span>
+                <span style={{display: "block", textAlign: "center", marginTop: "2rem", cursor: "pointer"}} onClick={userRegister}>
+                  Register new account
                 </span>
               </div>
             </div>

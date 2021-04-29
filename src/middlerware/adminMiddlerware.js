@@ -32,3 +32,7 @@ export const addAmount = (data) => async () => {
   const res = await axiouInst.post('/adminUpdate', data)
   console.log(res);
 }
+export const createVoucher = (data) => async () => {
+  const res = await axiouInst.post('/create', data)
+  console.log(res);
+}

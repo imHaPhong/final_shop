@@ -2451,3 +2451,19 @@ body {
     font-size: 1.2rem;
   }
 }
+
+.addVoucher{
+  background: white;
+  padding: 2rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  form{
+    margin: 0 auto;
+    display: flex;
+
+    .m-2{
+      margin: 0 20px;
+    }
+  }
+}

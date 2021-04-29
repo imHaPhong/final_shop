@@ -24,6 +24,7 @@ import {
   createrOder,
   deletePreOder,
   getOwnVoucher,
+  userAddAddress
 } from "../../middlerware/userMiddlerware";
 import MyApp from "./Payal";
 import { useMediaQuery } from "../../utilities/custom-hooks/useMediaQuery";
@@ -40,6 +41,7 @@ const FoodDetail = ({
   getRestaurantInfo,
   getPreOderAction,
   createrOder,
+  userAddAddress
 }) => {
   var total = 0;
   let { id } = useParams();
@@ -67,6 +69,7 @@ const FoodDetail = ({
   }, [user]);
 
   const [voucher, listVoucher] = useState([]);
+  const [useAddress, setUserAddress] = useState("")
 
   useEffect(() => {
     const getData = async () => {
@@ -198,6 +201,14 @@ const FoodDetail = ({
   });
   const [rawData, setRawData] = useState(restaurantData);
 
+  const userAddAddressx = () => {
+    if(useAddress === "") {
+      Alert.warning("Please enter your address")
+      return
+    }
+    userAddAddress(useAddress);
+  }
+
   useEffect(() => {
     setRawData(restaurantData);
   }, [restaurantData]);
@@ -235,7 +246,8 @@ const FoodDetail = ({
               ))}
             </div>
             <div>
-              <span className="co-title">Select a shipping address</span>
+              
+              {address.length ===0? <span className="co-title">Add shipping address</span>: <span className="co-title">Select a shipping address</span> }
               <div className="userAddress-list">
                 {address.map((el, index) => (
                   <span
@@ -251,6 +263,14 @@ const FoodDetail = ({
                     {el.title}
                   </span>
                 ))}
+                {address.length === 0 &&
+                    <InputGroup>
+                    <Input value={useAddress} onChange={(e) => setUserAddress(e)} />
+                    <InputGroup.Addon>
+                      <Icon icon="plus" onClick={userAddAddressx} />
+                    </InputGroup.Addon>
+                  </InputGroup>
+                }
               </div>
             </div>
             <div className="fd-voucher mt-2">
@@ -636,4 +656,5 @@ export default connect(mapStateToProps, {
   getRestaurantInfo,
   deletePreOder,
   getOwnVoucher,
+  userAddAddress
 })(FoodDetail);

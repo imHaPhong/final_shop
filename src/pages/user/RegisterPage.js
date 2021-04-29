@@ -53,6 +53,7 @@ const RegisterPage = ({userUpdate}) => {
             </h4>
             <input ref={imgInput} id="userInput" type="file" hidden={true} onChange={(e) => {
  const imgLink = URL.createObjectURL(e.target.files[0]);
+console.log(imgLink);
  img.current.src = imgLink;
  setHasSrc(true)
             }} />

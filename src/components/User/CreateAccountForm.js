@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router";
 import {
   Alert,
   Button,
@@ -91,6 +92,12 @@ const CreateAccountForm = ({ isUserExist, createAccount,setStep }) => {
     console.log(data);
   };
 
+  let history = useHistory();
+  
+  const userRegister = () => {
+    history.push('/user')
+  }
+
   return (
     <div>
       <Form
@@ -147,9 +154,13 @@ const CreateAccountForm = ({ isUserExist, createAccount,setStep }) => {
           >
             Submit
           </Button>
+          <span style={{display: "block", textAlign: "center", marginTop: "2rem", cursor: "pointer"}} onClick={userRegister}>
+                  Back to login
+                </span>
         </FormGroup>
         {/* <MyApp onSuccess={onSuccess} onCancel={onCancel} onError={onError} /> */}
       </Form>
+   
     </div>
   );
 };

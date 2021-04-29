@@ -102,12 +102,12 @@ const RestaurantLayout = ({ children }) => {
               </Link>
               <Link to="/admin/report">
                 <Nav.Item eventKey="1" icon={<Icon icon="book2" />}>
-                  Restaurant reported
+                  Review reported
                 </Nav.Item>
               </Link>
-              <Link to="/admin/post">
+              <Link to="/admin/create">
                 <Nav.Item eventKey="2" icon={<Icon icon="order-form" />}>
-                Review post reported
+                Create voucher
                 </Nav.Item>
               </Link>
       
